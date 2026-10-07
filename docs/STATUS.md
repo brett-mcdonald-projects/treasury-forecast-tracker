@@ -1,6 +1,6 @@
 # Status
 
-_Last updated: 2026-10-08 11:00 NZDT_
+_Last updated: 2026-10-08 11:15 NZDT_
 
 ## Working rules (set by Brett, 8 Oct)
 - One task at a time. Each reply gives everything needed for that one task, repeating earlier detail if necessary.
@@ -15,8 +15,8 @@ Recruiter Ben Dixon (ref BH-145793) called; client confirmed as the Treasury; he
 | T2 | Fabric capacity F2 running in NZ North, admin = brett@bldmcdonaldgmail.onmicrosoft.com; assign `tft-dev` to it | Brett | capacity `tftcapacity` created 10:35 (rg-tft, F2, NZ North, paid from Azure promo credit NZ$353 expiring 4 Nov). `tft-dev` assigned to it 10:43 (workspace id 6fc0ae0f-a1c1-485e-b7c3-0022d860b8a8) |
 | T2b | Sign normal Chrome into Fabric as brett@bldmcdonaldgmail.onmicrosoft.com so Claude can drive it (Chrome is currently signed in to the VUW work tenant: do NOT build there) | Brett | done 10:40 |
 | T3 | Parser written and tested against the real files | Claude | done: `notebooks/nb_ingest_transform.py`, 8 data tests pass on BEFU26 + PREFU26 (Spark write section untested until run in Fabric) |
-| T4 | Lakehouse `lh_tft` + notebook: fetch, hash, log, load tables | Claude drives Chrome | **CURRENT**: lakehouse `lh_tft` created (id 52ceb3d4-d27d-45df-9b30-2de17dc5777b, schemas off). Waiting on Brett to click Upload in the Import status panel and pick Downloads/tft-data/nb_ingest_transform.ipynb (Claude cannot use the Mac file picker). Then open notebook, Run all, check tables |
-| T5 | Import-mode semantic model + one report page | Brett with Claude's spec | pending |
+| T4 | Lakehouse `lh_tft` + notebook: fetch, hash, log, load tables | Claude drives Chrome | done 10:55. Notebook `nb_ingest_transform` (id 9c0ed747-0f7f-432a-9a2e-1c545a4c8c7a) ran in Fabric: fetched HYEFU25, BEFU26, PREFU26 live from budget.govt.nz (HYEFU26 = 404 not_published, logged), 8/8 tests passed, tables: dim_round 3, dim_series 48, fact_forecast 12,411, fact_headline 1,421, fact_revision 468, ingest_log, source_registry, test_results |
+| T5 | Semantic models + report | Claude/Brett | **CURRENT**. Direct Lake model `sm_forecast_tracker` created (id 2a558ad0-4bd5-4928-b23c-b1abf2c07659). Publish to web REFUSED for Direct Lake (tested with report `zz_publish_test`: delete later). Building import model via New item > Semantic model > Get Data > SQL Server database, server = lakehouse SQL endpoint (Copy SQL connection string on the endpoint row), database lh_tft, Import, Organizational account. Waiting on Brett to paste the server address (Claude cannot paste/read clipboard). Then: pick all tables, name `sm_forecast_tracker_public`, build report `Treasury Forecast Tracker` on it (Brett designs the page; he is an experienced Power BI developer), publish to web |
 | T6 | Publish to web; get link | Claude/Brett | tenant setting enabled 10:45 (new embed codes allowed; takes up to 15 min). Still to do: test on a throwaway report, then publish the real one |
 | T7 | PDF solution brief with screenshots | Claude | pending |
 | T8 | Send link + PDF to Ben | Brett | pending |
