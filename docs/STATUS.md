@@ -1,6 +1,6 @@
 # Status
 
-_Last updated: 2026-10-08 10:40 NZDT_
+_Last updated: 2026-10-08 11:00 NZDT_
 
 ## Working rules (set by Brett, 8 Oct)
 - One task at a time. Each reply gives everything needed for that one task, repeating earlier detail if necessary.
@@ -12,12 +12,12 @@ Recruiter Ben Dixon (ref BH-145793) called; client confirmed as the Treasury; he
 | # | Task | Owner | State |
 |---|---|---|---|
 | T1 | Download 4 Treasury xlsx files to Downloads (Claude's sandbox and the Mac bridge cannot reach budget.govt.nz) | Brett | done |
-| T2 | Fabric capacity F2 running in NZ North, admin = brett@bldmcdonaldgmail.onmicrosoft.com; assign `tft-dev` to it | Brett | capacity `tftcapacity` created 10:35 (rg-tft, F2, NZ North, paid from Azure promo credit NZ$353 expiring 4 Nov). Workspace assignment still to do |
-| T2b | Sign normal Chrome into Fabric as brett@bldmcdonaldgmail.onmicrosoft.com so Claude can drive it (Chrome is currently signed in to the VUW work tenant: do NOT build there) | Brett | **CURRENT** |
+| T2 | Fabric capacity F2 running in NZ North, admin = brett@bldmcdonaldgmail.onmicrosoft.com; assign `tft-dev` to it | Brett | capacity `tftcapacity` created 10:35 (rg-tft, F2, NZ North, paid from Azure promo credit NZ$353 expiring 4 Nov). `tft-dev` assigned to it 10:43 (workspace id 6fc0ae0f-a1c1-485e-b7c3-0022d860b8a8) |
+| T2b | Sign normal Chrome into Fabric as brett@bldmcdonaldgmail.onmicrosoft.com so Claude can drive it (Chrome is currently signed in to the VUW work tenant: do NOT build there) | Brett | done 10:40 |
 | T3 | Parser written and tested against the real files | Claude | done: `notebooks/nb_ingest_transform.py`, 8 data tests pass on BEFU26 + PREFU26 (Spark write section untested until run in Fabric) |
-| T4 | Lakehouse `lh_tft` + notebook: fetch, hash, log, load tables | Claude drives Chrome (Brett prefers delegating browser work to Claude) | pending |
+| T4 | Lakehouse `lh_tft` + notebook: fetch, hash, log, load tables | Claude drives Chrome | **CURRENT**: lakehouse `lh_tft` created (id 52ceb3d4-d27d-45df-9b30-2de17dc5777b, schemas off). Waiting on Brett to click Upload in the Import status panel and pick Downloads/tft-data/nb_ingest_transform.ipynb (Claude cannot use the Mac file picker). Then open notebook, Run all, check tables |
 | T5 | Import-mode semantic model + one report page | Brett with Claude's spec | pending |
-| T6 | Enable and use Publish to web; get link | Brett | pending |
+| T6 | Publish to web; get link | Claude/Brett | tenant setting enabled 10:45 (new embed codes allowed; takes up to 15 min). Still to do: test on a throwaway report, then publish the real one |
 | T7 | PDF solution brief with screenshots | Claude | pending |
 | T8 | Send link + PDF to Ben | Brett | pending |
 | Opt | Scheduled pipeline; Git connection; second page; Test/Prod workspaces | | only if time |
