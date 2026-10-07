@@ -1,6 +1,6 @@
 # Status
 
-_Last updated: 2026-10-07 17:40 NZDT_
+_Last updated: 2026-10-07 17:45 NZDT_
 
 ## Where we are
 Phase 0 (Foundations), not yet complete. Nothing built in Fabric yet.
@@ -10,8 +10,10 @@ Phase 0 (Foundations), not yet complete. Nothing built in Fabric yet.
 - Project files pushed to GitHub (repo public, Claude has push access).
 - Brett has an existing free Azure account (created via portal.azure.com for another project).
 
+- Tenant domain: bldmcdonaldgmail.onmicrosoft.com. Dedicated admin user created: brett@bldmcdonaldgmail.onmicrosoft.com (use this for all Fabric work).
+
 ## Next step
-1. Brett: find the tenant's .onmicrosoft.com domain in Microsoft Entra ID, create a dedicated admin user in it.
+1. (done) Tenant domain found and admin user created.
 2. Brett: sign in to Fabric as that user and start the trial; record the start date in DECISIONS.md.
 3. Brett: create workspaces `tft-dev`, `tft-test`, `tft-prod`; connect `tft-dev` to this repo.
 4. Proof (c): blank notebook round trip.
