@@ -1,6 +1,6 @@
 # Status
 
-_Last updated: 2026-10-08 11:40 NZDT_
+_Last updated: 2026-10-08 12:50 NZDT_
 
 ## Working rules (set by Brett, 8 Oct)
 - One task at a time. Each reply gives everything needed for that one task, repeating earlier detail if necessary.
@@ -21,6 +21,21 @@ Recruiter Ben Dixon (ref BH-145793) called; client confirmed as the Treasury; he
 | T7 | PDF solution brief | Claude | DONE 11:40: docs/brief/ (2-page brief + 2 pages exported from Power BI). States built vs not built, and that Claude wrote the code and did much of the configuration |
 | T8 | Send link + PDF to Ben Dixon | Brett | **CURRENT** |
 | Opt | Scheduled pipeline; Git connection; second page; Test/Prod workspaces | | only if time |
+
+## Report revision round 1 (requested by Brett 12:44, 8 Oct) - CURRENT
+| # | Change | State |
+|---|---|---|
+| R1 | Slicer wide enough that measure labels are not cut off | todo |
+| R2 | Rename `period_label` to "Period" (and tidy `measure` header) | todo |
+| R3 | Caveat "Independent demonstration by Brett McDonald; not a Treasury product" at top, separate from title | todo |
+| R4 | "Loaded by an automated Microsoft Fabric pipeline" under the title, smaller | todo |
+| R5 | "Source: ..." text bottom middle | todo |
+| R6 | "Created by Brett McDonald on [date]" bottom right | todo |
+| R7 | "Source data published on [date]" per source, bottom left (dates must be verified, not guessed) | todo |
+| R8 | "Next publishing date for sources ..." to the right of R7 (verify) | todo |
+| R9 | "Purpose and function" card: what it does, why, how to use it | todo |
+| R10 | Page 1 link "Data logs" to page 2; page 2 "Return to tracker" | todo |
+| R11 | Auto-generated insights: Brett asked whether possible. Proposal: rule-based insight sentence per measure generated in the notebook (largest revision between the latest two rounds), stored as a column on fact_headline so the slicer drives it with no relationships | proposed |
 
 ## Facts learned 8 Oct
 - Source files are tidy: `{round}-economic-forecasts-data.xlsx` has an economic sheet (30 quarterly series) and a fiscal sheet (18 June-year series + 'Is forecast' flag). Rounds confirmed: BEFU26, PREFU26. HYEFU25 has no file of this type in the Data Library (notebook probes for it and logs the result).
