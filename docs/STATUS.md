@@ -1,6 +1,6 @@
 # Status
 
-_Last updated: 2026-10-08 11:15 NZDT_
+_Last updated: 2026-10-08 11:25 NZDT_
 
 ## Working rules (set by Brett, 8 Oct)
 - One task at a time. Each reply gives everything needed for that one task, repeating earlier detail if necessary.
@@ -16,9 +16,9 @@ Recruiter Ben Dixon (ref BH-145793) called; client confirmed as the Treasury; he
 | T2b | Sign normal Chrome into Fabric as brett@bldmcdonaldgmail.onmicrosoft.com so Claude can drive it (Chrome is currently signed in to the VUW work tenant: do NOT build there) | Brett | done 10:40 |
 | T3 | Parser written and tested against the real files | Claude | done: `notebooks/nb_ingest_transform.py`, 8 data tests pass on BEFU26 + PREFU26 (Spark write section untested until run in Fabric) |
 | T4 | Lakehouse `lh_tft` + notebook: fetch, hash, log, load tables | Claude drives Chrome | done 10:55. Notebook `nb_ingest_transform` (id 9c0ed747-0f7f-432a-9a2e-1c545a4c8c7a) ran in Fabric: fetched HYEFU25, BEFU26, PREFU26 live from budget.govt.nz (HYEFU26 = 404 not_published, logged), 8/8 tests passed, tables: dim_round 3, dim_series 48, fact_forecast 12,411, fact_headline 1,421, fact_revision 468, ingest_log, source_registry, test_results |
-| T5 | Semantic models + report | Claude/Brett | **CURRENT**. Direct Lake model `sm_forecast_tracker` created (id 2a558ad0-4bd5-4928-b23c-b1abf2c07659). Publish to web REFUSED for Direct Lake (tested with report `zz_publish_test`: delete later). Building import model via New item > Semantic model > Get Data > SQL Server database, server = lakehouse SQL endpoint (Copy SQL connection string on the endpoint row), database lh_tft, Import, Organizational account. Waiting on Brett to paste the server address (Claude cannot paste/read clipboard). Then: pick all tables, name `sm_forecast_tracker_public`, build report `Treasury Forecast Tracker` on it (Brett designs the page; he is an experienced Power BI developer), publish to web |
-| T6 | Publish to web; get link | Claude/Brett | tenant setting enabled 10:45 (new embed codes allowed; takes up to 15 min). Still to do: test on a throwaway report, then publish the real one |
-| T7 | PDF solution brief with screenshots | Claude | pending |
+| T5 | Semantic models + report | Claude/Brett | **CURRENT**. Done: Direct Lake model `sm_forecast_tracker` (id 2a558ad0-...); import model `sm_forecast_tracker_public` (id 68cf5727-e77f-4361-ba33-7c4c286b0464, Power Query from lakehouse SQL endpoint, all 8 tables); report `Treasury Forecast Tracker` (id 92794f35-4986-4e37-935f-173abf578c2e) saved with one placeholder visual. To do: Brett designs the page(s) to Claude's spec (dim_measure calculated table + relationships, slicer, line chart, revision table, pipeline page) |
+| T6 | Publish to web | Claude | DONE 11:20. Public link (live; report edits show through): https://app.fabric.microsoft.com/view?r=eyJrIjoiZjEzMDE2NzItNGIyOC00ZTFkLTk4NjMtY2YzM2NhODc3MjU2IiwidCI6ImZlNzZjMzBlLWY2OWUtNDczNy1hNzMwLTk0OGI1MDIxZTFiOCJ9 . Direct Lake reports are not eligible for Publish to web (confirmed), hence the import copy. Delete `zz_publish_test` later |
+| T7 | PDF solution brief (architecture diagram, run evidence, built vs planned); append Power BI's own PDF export of the report if Brett downloads it to Downloads | Claude | in progress while Brett designs |
 | T8 | Send link + PDF to Ben | Brett | pending |
 | Opt | Scheduled pipeline; Git connection; second page; Test/Prod workspaces | | only if time |
 
