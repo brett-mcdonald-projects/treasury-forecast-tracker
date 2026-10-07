@@ -1,6 +1,6 @@
 # Status
 
-_Last updated: 2026-10-08 11:25 NZDT_
+_Last updated: 2026-10-08 11:40 NZDT_
 
 ## Working rules (set by Brett, 8 Oct)
 - One task at a time. Each reply gives everything needed for that one task, repeating earlier detail if necessary.
@@ -16,10 +16,10 @@ Recruiter Ben Dixon (ref BH-145793) called; client confirmed as the Treasury; he
 | T2b | Sign normal Chrome into Fabric as brett@bldmcdonaldgmail.onmicrosoft.com so Claude can drive it (Chrome is currently signed in to the VUW work tenant: do NOT build there) | Brett | done 10:40 |
 | T3 | Parser written and tested against the real files | Claude | done: `notebooks/nb_ingest_transform.py`, 8 data tests pass on BEFU26 + PREFU26 (Spark write section untested until run in Fabric) |
 | T4 | Lakehouse `lh_tft` + notebook: fetch, hash, log, load tables | Claude drives Chrome | done 10:55. Notebook `nb_ingest_transform` (id 9c0ed747-0f7f-432a-9a2e-1c545a4c8c7a) ran in Fabric: fetched HYEFU25, BEFU26, PREFU26 live from budget.govt.nz (HYEFU26 = 404 not_published, logged), 8/8 tests passed, tables: dim_round 3, dim_series 48, fact_forecast 12,411, fact_headline 1,421, fact_revision 468, ingest_log, source_registry, test_results |
-| T5 | Semantic models + report | Claude/Brett | **CURRENT**. Done: Direct Lake model `sm_forecast_tracker` (id 2a558ad0-...); import model `sm_forecast_tracker_public` (id 68cf5727-e77f-4361-ba33-7c4c286b0464, Power Query from lakehouse SQL endpoint, all 8 tables); report `Treasury Forecast Tracker` (id 92794f35-4986-4e37-935f-173abf578c2e) saved with one placeholder visual. To do: Brett designs the page(s) to Claude's spec (dim_measure calculated table + relationships, slicer, line chart, revision table, pipeline page) |
-| T6 | Publish to web | Claude | DONE 11:20. Public link (live; report edits show through): https://app.fabric.microsoft.com/view?r=eyJrIjoiZjEzMDE2NzItNGIyOC00ZTFkLTk4NjMtY2YzM2NhODc3MjU2IiwidCI6ImZlNzZjMzBlLWY2OWUtNDczNy1hNzMwLTk0OGI1MDIxZTFiOCJ9 . Direct Lake reports are not eligible for Publish to web (confirmed), hence the import copy. Delete `zz_publish_test` later |
-| T7 | PDF solution brief (architecture diagram, run evidence, built vs planned); append Power BI's own PDF export of the report if Brett downloads it to Downloads | Claude | in progress while Brett designs |
-| T8 | Send link + PDF to Ben | Brett | pending |
+| T5 | Semantic models + report | Claude (Brett delegated all of it) | DONE 11:30. Import model `sm_forecast_tracker_public` (id 68cf5727-e77f-4361-ba33-7c4c286b0464); Direct Lake model `sm_forecast_tracker`. Report `Treasury Forecast Tracker` (id 92794f35-4986-4e37-935f-173abf578c2e), canvas 1280x720: page "Forecast tracker" (single-select slicer on fact_headline[measure], line chart period_label x value x round_name sorted by period_label asc, matrix, title + note text boxes, page filter period_end on or after 01/07/2022) and page "Pipeline and data quality" (ingest_log and test_results tables). No DAX measures or relationships yet (model-view editing was unresponsive in a background tab) |
+| T6 | Publish to web | Claude | DONE 11:30. First embed code showed a stale cached placeholder, so it was deleted and re-created. CURRENT PUBLIC LINK: https://app.fabric.microsoft.com/view?r=eyJrIjoiNzdhOWU5OGItZWYyYS00ODAxLTg0ODgtYzg2ODNlYTFmZTBjIiwidCI6ImZlNzZjMzBlLWY2OWUtNDczNy1hNzMwLTk0OGI1MDIxZTFiOCJ9 (verified rendering both pages). Saved edits can take up to an hour to show publicly. The link only works while the F2 capacity is running |
+| T7 | PDF solution brief | Claude | DONE 11:40: docs/brief/ (2-page brief + 2 pages exported from Power BI). States built vs not built, and that Claude wrote the code and did much of the configuration |
+| T8 | Send link + PDF to Ben Dixon | Brett | **CURRENT** |
 | Opt | Scheduled pipeline; Git connection; second page; Test/Prod workspaces | | only if time |
 
 ## Facts learned 8 Oct
@@ -30,6 +30,16 @@ Recruiter Ben Dixon (ref BH-145793) called; client confirmed as the Treasury; he
 
 - A personal Microsoft account cannot create a Fabric capacity; the brett@ org user was given Contributor on the subscription and created it.
 - Claude can drive Brett's Chrome directly from this session (tab group already open). Extension does not run in incognito.
+
+- Two Chrome browsers are connected to Claude: Browser 1 (Mac, correct, tab group has the Fabric tabs signed in as brett@) and Browser 2 (Windows, NOT to be used; the session flipped to it once mid-task). If tabs vanish, call list_connected_browsers and select the Mac one.
+- Format-pane routine that works: select visual > Format > General > Properties; numeric Size/Position inputs accept typed values + Tab; for text boxes use find + form_input because the floating text toolbar covers the inputs.
+
+## After the deadline (backlog order)
+1. Brett reviews report + brief; fix anything he flags.
+2. Delete `zz_publish_test`; add relationships/dim tables and a revision measure; sort rounds chronologically; friendly field names; theme.
+3. Scheduled pipeline + failure alert; connect workspace to this repo (Fabric Git integration); Test/Prod workspaces + deployment pipeline; UAT run.
+4. Stats NZ actuals as source 2.
+5. Capacity: F2 bills hourly from the NZ$353 Azure credit (expires 4 Nov 2026); pausing it takes the public link down.
 
 ## Blockers
 - None known. Risk: new pay-as-you-go subscriptions can have no Fabric quota; fallback is a Power BI-only build, labelled as such.

@@ -1,0 +1,94 @@
+<!doctype html><html><head><meta charset="utf-8"><style>
+@page{size:A4;margin:14mm 15mm}
+body{font-family:Carlito,Calibri,Arial,sans-serif;font-size:10.4pt;line-height:1.38;color:#1b1b1b;margin:0}
+h1{font-size:21pt;margin:0;color:#1F3864}
+.sub{color:#555;margin:2px 0 8px}
+.links{border-top:2px solid #1F3864;border-bottom:1px solid #bbb;padding:5px 0;margin-bottom:9px;font-size:9.6pt}
+a{color:#0563C1}
+h2{font-size:12pt;color:#1F3864;margin:11px 0 4px;border-bottom:1px solid #c9c9c9;padding-bottom:2px}
+p{margin:0 0 6px} ul{margin:0 0 6px 16px;padding:0} li{margin-bottom:2px}
+table{border-collapse:collapse;width:100%;font-size:9.5pt;margin:3px 0 6px}
+th{background:#1F3864;color:#fff;text-align:left;padding:3px 6px;font-weight:600}
+td{border-bottom:1px solid #d5d5d5;padding:3px 6px;vertical-align:top}
+td.k{white-space:nowrap;font-weight:600;width:25%}
+.two{display:flex;gap:14px}.two>div{flex:1}
+.note{background:#F2F5FA;border-left:3px solid #1F3864;padding:5px 8px;font-size:9.6pt;margin:6px 0}
+.pb{page-break-before:always}
+code{font-family:Consolas,monospace;font-size:8.8pt}
+</style></head><body>
+<h1>Treasury Forecast Tracker</h1>
+<div class="sub">A Microsoft Fabric and Power BI demonstration &nbsp;|&nbsp; Brett McDonald &nbsp;|&nbsp; 8 October 2026</div>
+<div class="links"><b>Live report (no sign-in):</b> <a href="https://app.fabric.microsoft.com/view?r=eyJrIjoiNzdhOWU5OGItZWYyYS00ODAxLTg0ODgtYzg2ODNlYTFmZTBjIiwidCI6ImZlNzZjMzBlLWY2OWUtNDczNy1hNzMwLTk0OGI1MDIxZTFiOCJ9">open the Power BI report</a>
+&nbsp;&nbsp;|&nbsp;&nbsp; <b>Code and project documents:</b> <a href="https://github.com/brett-mcdonald-projects/treasury-forecast-tracker">github.com/brett-mcdonald-projects/treasury-forecast-tracker</a></div>
+
+<h2>What it does</h2>
+<p>The report answers one question: <b>how has the economic and fiscal outlook changed across the Treasury's successive forecast rounds?</b> It loads the Treasury's published Economic and Fiscal Update data files for three rounds (Half Year Update 2025, Budget Update 2026 and Pre-election Update 2026) and lets the reader compare any of eight headline measures across them, such as real GDP growth, CPI inflation, the operating balance and net core Crown debt.</p>
+<p>I built it to show how I approach a reporting solution on Microsoft Fabric end to end: automated ingestion, a tested data model, and a governed route from source file to published report. It is an independent demonstration on public data and is not a Treasury product.</p>
+
+<h2>How it works</h2>
+<svg viewBox="0 0 760 178" width="100%" xmlns="http://www.w3.org/2000/svg" font-family="Carlito,Calibri,Arial" font-size="10.5">
+<defs><marker id="a" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#555"/></marker></defs>
+<rect x="150" y="4" width="606" height="126" rx="6" fill="#F2F5FA" stroke="#1F3864" stroke-dasharray="4 3"/>
+<text x="160" y="18" fill="#1F3864" font-weight="700">Microsoft Fabric workspace (F2 capacity, New Zealand North)</text>
+<g fill="#fff" stroke="#1F3864">
+<rect x="4" y="40" width="122" height="64" rx="5"/>
+<rect x="162" y="30" width="118" height="88" rx="5"/>
+<rect x="302" y="30" width="118" height="88" rx="5"/>
+<rect x="442" y="30" width="118" height="88" rx="5"/>
+<rect x="582" y="30" width="164" height="40" rx="5"/>
+<rect x="582" y="78" width="164" height="40" rx="5"/>
+<rect x="162" y="142" width="398" height="32" rx="5" stroke="#777"/>
+<rect x="582" y="142" width="164" height="32" rx="5" stroke="#777"/>
+</g>
+<g text-anchor="middle">
+<text x="65" y="60" font-weight="700">The Treasury</text><text x="65" y="74">forecast data files</text><text x="65" y="88">(budget.govt.nz)</text>
+<text x="221" y="48" font-weight="700">1 Notebook: ingest</text><text x="221" y="63">probe each round</text><text x="221" y="77">hash and compare</text><text x="221" y="91">land raw file,</text><text x="221" y="105">write ingest log</text>
+<text x="361" y="48" font-weight="700">2 Lakehouse</text><text x="361" y="63">raw files kept as-is</text><text x="361" y="77">parsed to a</text><text x="361" y="91">star schema</text><text x="361" y="105">(Delta tables)</text>
+<text x="501" y="48" font-weight="700">3 Data checks</text><text x="501" y="63">8 automated tests</text><text x="501" y="77">tables refresh only</text><text x="501" y="91">if all pass;</text><text x="501" y="105">results logged</text>
+<text x="664" y="47" font-weight="700">4a Direct Lake model</text><text x="664" y="61">for use inside the organisation</text>
+<text x="664" y="95" font-weight="700">4b Import model</text><text x="664" y="109">feeds the public report</text>
+<text x="361" y="162">GitHub: notebook source, plan, decision log, status, acceptance template</text>
+<text x="664" y="162" font-weight="700">5 Power BI report (public link)</text>
+</g>
+<g stroke="#555" fill="none" marker-end="url(#a)">
+<path d="M126,72 H160"/><path d="M280,74 H300"/><path d="M420,74 H440"/><path d="M560,60 H580 V50"/><path d="M560,88 H580 V98"/><path d="M664,118 V140"/>
+</g></svg>
+
+<h2>What is built and working today</h2>
+<table>
+<tr><th>Component</th><th>Detail</th></tr>
+<tr><td class="k">Source registry</td><td>One row per forecast round with its file address. A new round or a new source is a new row, not a redesign. Four rounds are registered, including Half Year Update 2026, which is not yet published.</td></tr>
+<tr><td class="k">Change detection</td><td>Each run requests every registered file, hashes it (SHA-256) and compares it with the last loaded hash in the ingest log. Only new or changed files are landed and processed. A missing file is recorded, not treated as a failure.</td></tr>
+<tr><td class="k">Lakehouse</td><td>Raw files are kept untouched in a timestamped landing folder. Parsed data is held in eight Delta tables: 12,411 observations across 48 Treasury series and three rounds, 1,421 rows of derived headline measures, plus the registry, ingest log and test results.</td></tr>
+<tr><td class="k">Data checks</td><td>Eight tests run before any table is refreshed: row presence, duplicate keys, nulls, referential integrity, required series present in every round, no gaps in the quarterly GDP series, forecast flag complete, and a plausibility range. A failed test stops the refresh.</td></tr>
+<tr><td class="k">Semantic models</td><td>A Direct Lake model over the lakehouse, and an import-mode copy for the public report, because Power BI's public publishing does not support Direct Lake.</td></tr>
+<tr><td class="k">Report</td><td>Two pages. <i>Forecast tracker</i>: measure selector, chart and table by round. <i>Pipeline and data quality</i>: the ingest log and test results, so the reader can see what the pipeline did.</td></tr>
+</table>
+<div class="note"><b>Result of the run on 8 October 2026:</b> three rounds fetched directly from budget.govt.nz and loaded (HTTP 200); Half Year Update 2026 returned 404 and was logged as not yet published; 8 of 8 data checks passed. When the Treasury publishes that file under its usual naming, the next run will pick it up without a code change.</div>
+
+<h2 class="pb">Design choices</h2>
+<ul>
+<li><b>Definitions are computed once, in the data layer.</b> Growth rates and percent-of-GDP measures are derived in the notebook, so every report built on the model uses the same calculation.</li>
+<li><b>Raw data is never overwritten.</b> Each fetched file is stored as received, so any figure can be traced back to the file it came from.</li>
+<li><b>The pipeline reports on itself.</b> The ingest log and test results are tables in the model and are shown in the report.</li>
+<li><b>Neutral presentation.</b> The report describes how forecasts moved between rounds. It does not assess forecast quality.</li>
+<li><b>One documented heuristic.</b> The economic data file has no forecast flag, so the last quarter with a whole-number CPI index is treated as the last actual. The fiscal file carries its own flag, which is used directly.</li>
+</ul>
+
+<h2>What is not built yet</h2>
+<p>This was built in under a day as a first release. The following are planned and tracked in the repository, and are not claimed as done:</p>
+<table>
+<tr><th>Item</th><th>Status</th></tr>
+<tr><td class="k">Scheduled run</td><td>The notebook is run on demand today. Next step is a scheduled Fabric pipeline with a failure alert.</td></tr>
+<tr><td class="k">Dev, Test, Prod</td><td>One workspace so far. Next step is Fabric Git integration and a deployment pipeline with an acceptance checklist before release.</td></tr>
+<tr><td class="k">Reconciliation</td><td>Tests check structure and integrity. A check of selected figures against the Treasury's published tables is still to add.</td></tr>
+<tr><td class="k">Actuals</td><td>Stats NZ outturns (GDP, CPI, unemployment) as a second source, to show actual against forecast.</td></tr>
+<tr><td class="k">Report polish</td><td>Round order in the legend is alphabetical, not chronological; field names are shown as stored; no reusable theme file yet.</td></tr>
+</table>
+
+<h2>How it was built</h2>
+<p>I set the requirements (one cloud platform, automated ingestion from a predictable public source, change detection, an architecture that can take further sources, and a full release life cycle rather than a one-off build) and chose the subject and approach. I directed an AI assistant (Claude), which wrote the notebook code and carried out much of the Fabric configuration, and I reviewed the results. The decision log and status file in the repository record what was decided and why.</p>
+
+<h2>Platform</h2>
+<p>Microsoft Fabric (lakehouse, PySpark notebook, Direct Lake and import semantic models), Power BI service, GitHub. Built entirely in the browser. Data: the Treasury, Economic and Fiscal Update data files (budget.govt.nz).</p>
+<h2>The report</h2><p>The two pages that follow are exported from the live Power BI report.</p></body></html>
