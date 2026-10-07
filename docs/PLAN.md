@@ -5,7 +5,7 @@ Demonstrate modern Power BI development on Microsoft Fabric across the full life
 
 ## Requirements (set by Brett, 7 Oct 2026)
 - End to end on one cloud platform (Microsoft); developed entirely in the browser (Mac, no Power BI Desktop).
-- Free where possible; paid options only where they change things materially.
+- Free where possible; paid options only where they change things materially. (The free trial was refused, so a small paid capacity is used.)
 - Public data, free, fetched automatically from a predictable source.
 - Detect when a source changes, load the new data, refresh the report.
 - "Done" is the life cycle, not the build: version control, acceptance testing, maintenance, change and feature deployment.
@@ -22,7 +22,7 @@ How has the outlook been revised across forecast rounds (Half Year Update 2025, 
 | 3 | Treasury monthly financial statements | Unknown; may be PDF only | v0.3 | Not yet verified |
 
 ## Architecture
-- Workspaces: `tft-dev`, `tft-test`, `tft-prod` on one Fabric trial capacity; Fabric deployment pipeline promotes Dev -> Test -> Prod.
+- Workspaces: `tft-dev`, `tft-test`, `tft-prod` on one paid F2 Fabric capacity (New Zealand North), paused between sessions; Fabric deployment pipeline promotes Dev -> Test -> Prod.
 - Version control: this GitHub repo, connected to `tft-dev` through Fabric Git integration. Work is issue -> branch -> pull request -> main.
 - Lakehouse layers: `Files/landing` (raw, immutable, one folder per fetch) -> bronze (as-parsed) -> silver (conformed long format) -> gold (star schema).
 - Control tables: `source_registry` (one row per source: address pattern, fetch method, parser, cadence) and `ingest_log` (hash, fetched_at, status). Adding a source = one registry row + one parser function.
