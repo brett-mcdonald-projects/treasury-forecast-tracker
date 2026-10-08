@@ -15,6 +15,8 @@ az deployment group create  -g rg-tft --template-file infra/capacity-schedule.js
 
 After the first deployment the connection must be authorised once by a user with rights to the capacity: open the connection `arm-tft` in the Azure portal, Edit API connection, Authorize, Save. The Logic Apps then act as that user; nothing else needs a role assignment.
 
+The capacity path passes `capacities%2F<name>` as one URL-encoded segment: the ARM connector's route is `/subscriptions/{sub}/resourcegroups/{rg}/providers/{namespace}/{shortResourceId}/{action}`, and `capacities/<name>` as two segments fails with `NotFound` (found and fixed 9 Oct 2026; proven with a suspend and resume cycle at 7:08 am).
+
 Why Logic Apps and not an Automation runbook: a runbook's managed identity needs a role assignment on the resource group, which needs Owner rights the working account does not have. The ARM connector signs in as the user instead.
 
 Cost basis (Azure retail prices, NZ North, NZD, 8 Oct 2026): Fabric capacity NZ$0.3887 per CU-hour, so F2 (2 CU) is NZ$0.7774 an hour: NZ$18.66 a day running 24 hours, NZ$9.33 a day for 12 hours, NZ$11.66 a day for 15 hours. OneLake storage NZ$0.053 per GB-month. Logic Apps consumption: 4 actions a day, within the free grant.

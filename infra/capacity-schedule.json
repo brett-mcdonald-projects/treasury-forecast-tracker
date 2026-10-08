@@ -30,7 +30,7 @@
   "variables": {
     "connName": "arm-tft",
     "armApiId": "[subscriptionResourceId('Microsoft.Web/locations/managedApis', parameters('location'), 'arm')]",
-    "capacityPath": "[concat('/subscriptions/', subscription().subscriptionId, '/resourcegroups/', parameters('capacityResourceGroup'), '/providers/Microsoft.Fabric/capacities/', parameters('capacityName'))]"
+    "capacityPath": "[concat('/subscriptions/', subscription().subscriptionId, '/resourcegroups/', parameters('capacityResourceGroup'), '/providers/Microsoft.Fabric/capacities%2F', parameters('capacityName'))]"
   },
   "resources": [
     {
