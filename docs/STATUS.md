@@ -1,6 +1,6 @@
 # Status
 
-_Last updated: 2026-10-08 17:30 NZDT_
+_Last updated: 2026-10-09 07:40 NZDT_
 
 ## Working rules (set by Brett, 8 Oct)
 - One task at a time. Each reply gives everything needed for that one task, repeating earlier detail if necessary.
@@ -70,13 +70,13 @@ Lessons from round 2:
 ## Round 3 (requested by Brett 15:42, 8 Oct): live hours and cost - DONE 17:30
 | # | Item | State |
 |---|---|---|
-| C1 | Capacity live 7:00 am to 10:00 pm NZ time daily | live. `infra/capacity-schedule.json` -> Logic Apps `la-tft-capacity-resume` (07:00) and `la-tft-capacity-suspend` (22:00, was 19:00 until 17:25) in rg-tft (australiaeast); ARM connection `arm-tft` authorised by Brett 17:15 (status Connected). First suspend due 10:00 pm 8 Oct, first resume 7:00 am 9 Oct: CHECK BOTH RAN (Logic App run history) |
+| C1 | Capacity live 7:00 am to 10:00 pm NZ time daily | live. `infra/capacity-schedule.json` -> Logic Apps `la-tft-capacity-resume` (07:00) and `la-tft-capacity-suspend` (22:00, was 19:00 until 17:25) in rg-tft (australiaeast); ARM connection `arm-tft` authorised by Brett 17:15 (status Connected). First scheduled suspend (10 pm 8 Oct) and resume (7 am 9 Oct) both FAILED with NotFound: the ARM connector needs `capacities%2F<name>` as one path segment. Fixed and deployed 7:06 am 9 Oct, then proven with a live cycle (suspend 7:08 Paused, resume 7:09 Active). Capacity ran all night 8-9 Oct (about NZ$7 extra). Next real test: 10 pm 9 Oct |
 | C2 | Note on the report | done: "Live 7:00 am to 10:00 pm NZ time, daily..." text box on both pages (typed text; the report cannot read the Logic App schedule, so change both together) |
-| C3 | Pipeline moved to 07:30 | done, so it never runs before the 07:00 resume |
+| C3 | Pipeline moved to 07:30 | done. First scheduled run 9 Oct: started 07:30:00, completed 07:34:57 (invoke type Scheduled); ingest 07:32 found HYEFU25, BEFU26, PREFU26 unchanged and HYEFU26 not published; model refreshed |
 | C4 | Costs | Subscription is an Azure free trial: US$200 (shown as NZ$353) credit, 27 days left on 8 Oct, expires 4 Nov; then the subscription is disabled unless upgraded to pay-as-you-go. Cost Management showed NZ$0.00 at 15:50 (usage posts 8 to 24 hours late). Rate: NZ$0.3887 per CU-hour, F2 = NZ$0.7774/h: NZ$18.66/day at 24 h, NZ$11.66/day at 15 h. Projection at 15 h/day: about NZ$303 to 4 Nov, leaving about NZ$45. Other resources in the subscription: rg-qa-register-test (static web app, Free; SQL serverless GP_S_Gen5 database) |
 | C5 | PDF brief | source updated with the live hours; the PDF already with the recruiter is the 2:15 pm version and is not being re-sent. Rebuild from docs/brief/solution-brief.html when needed |
 
-Lesson: redeploying the template with the connection resource included may reset its authorisation; to change only the hours, deploy a copy without the `Microsoft.Web/connections` resource (what-if first).
+Lessons: a Logic App recurrence fires once immediately on creation (so expect a failed run at deploy time if the connection is not yet authorised); test a schedule with a real cycle, not just a deploy; redeploying the template with the connection resource included may reset its authorisation; to change only the hours, deploy a copy without the `Microsoft.Web/connections` resource (what-if first).
 
 ## Facts learned 8 Oct
 - Source files are tidy: `{round}-economic-forecasts-data.xlsx` has an economic sheet (30 quarterly series) and a fiscal sheet (18 June-year series + 'Is forecast' flag). Rounds confirmed: BEFU26, PREFU26. HYEFU25 has no file of this type in the Data Library (notebook probes for it and logs the result).
