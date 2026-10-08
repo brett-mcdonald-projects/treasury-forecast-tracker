@@ -1,13 +1,13 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
-  "name": "aa02sub826e3ee4dd050",
+  "name": "aa11livecfa8a62394ad",
   "position": {
-    "x": 20,
-    "y": 54,
-    "z": 21,
-    "height": 30,
-    "width": 660,
-    "tabOrder": 21
+    "x": 690,
+    "y": 50,
+    "z": 40,
+    "height": 44,
+    "width": 410,
+    "tabOrder": 40
   },
   "visual": {
     "visualType": "textbox",
@@ -19,9 +19,17 @@
               {
                 "textRuns": [
                   {
-                    "value": "Loaded by a scheduled Microsoft Fabric pipeline (runs daily at 7:30 am)",
+                    "value": "Live 7:00 am to 7:00 pm NZ time, daily. ",
                     "textStyle": {
-                      "fontSize": "11pt",
+                      "fontWeight": "bold",
+                      "fontSize": "9pt",
+                      "color": "#555555"
+                    }
+                  },
+                  {
+                    "value": "The Fabric capacity is paused overnight to save cost, so this link does not open outside those hours.",
+                    "textStyle": {
+                      "fontSize": "9pt",
                       "color": "#555555"
                     }
                   }

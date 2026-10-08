@@ -6,22 +6,53 @@
         "name": "Ingest and transform",
         "type": "TridentNotebook",
         "dependsOn": [],
-        "policy": { "timeout": "0.01:00:00", "retry": 1, "retryIntervalInSeconds": 60, "secureOutput": false, "secureInput": false },
-        "typeProperties": { "notebookId": "9c0ed747-0f7f-432a-9a2e-1c545a4c8c7a", "workspaceId": "6fc0ae0f-a1c1-485e-b7c3-0022d860b8a8" }
+        "policy": {
+          "timeout": "0.01:00:00",
+          "retry": 1,
+          "retryIntervalInSeconds": 60,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "typeProperties": {
+          "notebookId": "9c0ed747-0f7f-432a-9a2e-1c545a4c8c7a",
+          "workspaceId": "6fc0ae0f-a1c1-485e-b7c3-0022d860b8a8"
+        }
       },
       {
         "name": "Refresh report model",
         "type": "TridentNotebook",
-        "dependsOn": [ { "activity": "Ingest and transform", "dependencyConditions": [ "Succeeded" ] } ],
-        "policy": { "timeout": "0.01:00:00", "retry": 2, "retryIntervalInSeconds": 90, "secureOutput": false, "secureInput": false },
-        "typeProperties": { "notebookId": "9ae5fe3e-3642-48b8-9fe8-1f4c4aa9e4af", "workspaceId": "6fc0ae0f-a1c1-485e-b7c3-0022d860b8a8" }
+        "dependsOn": [
+          {
+            "activity": "Ingest and transform",
+            "dependencyConditions": [
+              "Succeeded"
+            ]
+          }
+        ],
+        "policy": {
+          "timeout": "0.01:00:00",
+          "retry": 2,
+          "retryIntervalInSeconds": 90,
+          "secureOutput": false,
+          "secureInput": false
+        },
+        "typeProperties": {
+          "notebookId": "9ae5fe3e-3642-48b8-9fe8-1f4c4aa9e4af",
+          "workspaceId": "6fc0ae0f-a1c1-485e-b7c3-0022d860b8a8"
+        }
       }
     ]
   },
   "schedule": {
-    "note": "Held by the Fabric job scheduler, not in the pipeline definition; recorded here for reference.",
+    "note": "Held by the Fabric job scheduler, not in the pipeline definition; recorded here for reference. Runs at 07:30 so the capacity (resumed at 07:00 by infra/capacity-schedule.json) is up first.",
     "id": "ecdac20e-6e8d-4871-9b26-7f52ae8a0d6c",
-    "type": "Daily", "times": [ "07:00" ], "localTimeZoneId": "New Zealand Standard Time",
-    "startDateTime": "2026-10-08T00:00:00", "endDateTime": "2026-12-31T23:59:00", "enabled": true
+    "type": "Daily",
+    "times": [
+      "07:30"
+    ],
+    "localTimeZoneId": "New Zealand Standard Time",
+    "startDateTime": "2026-10-08T00:00:00",
+    "endDateTime": "2026-12-31T23:59:00",
+    "enabled": true
   }
 }

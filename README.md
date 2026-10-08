@@ -8,13 +8,13 @@ A demonstration Microsoft Fabric and Power BI solution by Brett McDonald.
 
 **Solution brief (PDF):** [docs/brief](docs/brief/Treasury_Forecast_Tracker_Solution_Brief_Brett_McDonald.pdf)
 
-**Status:** working and scheduled (8 Oct 2026): a Fabric pipeline runs the load and the model refresh daily at 7:00 am. A failure alert, Dev/Test/Prod and Git-connected deployment are still to come. See [docs/STATUS.md](docs/STATUS.md).
+**Status:** working and scheduled (8 Oct 2026): a Fabric pipeline runs the load and the model refresh daily at 7:30 am. A failure alert, Dev/Test/Prod and Git-connected deployment are still to come. See [docs/STATUS.md](docs/STATUS.md).
 
 This is an independent portfolio project built on public data. It is not affiliated with or endorsed by the Treasury or Stats NZ. It describes forecast revisions and outturns; it does not assess forecast quality.
 
 ## How it works
 
-1. A Fabric pipeline (`pl_forecast_refresh`, daily at 7:00 am) runs the ingest notebook, which probes each registered public source and compares a file hash against an ingest log.
+1. A Fabric pipeline (`pl_forecast_refresh`, daily at 7:30 am) runs the ingest notebook, which probes each registered public source and compares a file hash against an ingest log.
 2. When a source has changed, the raw file is landed untouched in the lakehouse, then cleaned and loaded to a star schema.
 3. Eight automated data tests run; the reporting tables refresh only if all pass. (Reconciliation against the Treasury's published tables is not built yet.)
 4. A second notebook syncs the lakehouse SQL endpoint, refreshes the report's semantic model and waits for the result, so the Power BI report updates.

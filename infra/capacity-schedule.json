@@ -1,0 +1,193 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "capacityName": {
+      "type": "string",
+      "defaultValue": "tftcapacity"
+    },
+    "capacityResourceGroup": {
+      "type": "string",
+      "defaultValue": "rg-tft"
+    },
+    "liveFromHour": {
+      "type": "int",
+      "defaultValue": 7
+    },
+    "liveToHour": {
+      "type": "int",
+      "defaultValue": 19
+    },
+    "timeZone": {
+      "type": "string",
+      "defaultValue": "New Zealand Standard Time"
+    },
+    "location": {
+      "type": "string",
+      "defaultValue": "australiaeast"
+    }
+  },
+  "variables": {
+    "connName": "arm-tft",
+    "armApiId": "[subscriptionResourceId('Microsoft.Web/locations/managedApis', parameters('location'), 'arm')]",
+    "capacityPath": "[concat('/subscriptions/', subscription().subscriptionId, '/resourcegroups/', parameters('capacityResourceGroup'), '/providers/Microsoft.Fabric/capacities/', parameters('capacityName'))]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Web/connections",
+      "apiVersion": "2016-06-01",
+      "name": "[variables('connName')]",
+      "location": "[parameters('location')]",
+      "properties": {
+        "displayName": "Azure Resource Manager (Brett)",
+        "api": {
+          "id": "[variables('armApiId')]"
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Logic/workflows",
+      "apiVersion": "2019-05-01",
+      "name": "la-tft-capacity-resume",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/connections', variables('connName'))]"
+      ],
+      "properties": {
+        "state": "Enabled",
+        "definition": {
+          "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+          "contentVersion": "1.0.0.0",
+          "parameters": {
+            "$connections": {
+              "type": "Object",
+              "defaultValue": {}
+            }
+          },
+          "triggers": {
+            "Every_day_at_live_from_hour": {
+              "type": "Recurrence",
+              "recurrence": {
+                "frequency": "Day",
+                "interval": 1,
+                "timeZone": "[parameters('timeZone')]",
+                "schedule": {
+                  "hours": [
+                    "[parameters('liveFromHour')]"
+                  ],
+                  "minutes": [
+                    0
+                  ]
+                }
+              }
+            }
+          },
+          "actions": {
+            "Resume_capacity": {
+              "type": "ApiConnection",
+              "inputs": {
+                "host": {
+                  "connection": {
+                    "name": "@parameters('$connections')['arm']['connectionId']"
+                  }
+                },
+                "method": "post",
+                "path": "[concat(variables('capacityPath'), '/resume')]",
+                "queries": {
+                  "x-ms-api-version": "2023-11-01"
+                }
+              },
+              "runAfter": {}
+            }
+          }
+        },
+        "parameters": {
+          "$connections": {
+            "value": {
+              "arm": {
+                "connectionId": "[resourceId('Microsoft.Web/connections', variables('connName'))]",
+                "connectionName": "[variables('connName')]",
+                "id": "[variables('armApiId')]"
+              }
+            }
+          }
+        }
+      }
+    },
+    {
+      "type": "Microsoft.Logic/workflows",
+      "apiVersion": "2019-05-01",
+      "name": "la-tft-capacity-suspend",
+      "location": "[parameters('location')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/connections', variables('connName'))]"
+      ],
+      "properties": {
+        "state": "Enabled",
+        "definition": {
+          "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+          "contentVersion": "1.0.0.0",
+          "parameters": {
+            "$connections": {
+              "type": "Object",
+              "defaultValue": {}
+            }
+          },
+          "triggers": {
+            "Every_day_at_live_to_hour": {
+              "type": "Recurrence",
+              "recurrence": {
+                "frequency": "Day",
+                "interval": 1,
+                "timeZone": "[parameters('timeZone')]",
+                "schedule": {
+                  "hours": [
+                    "[parameters('liveToHour')]"
+                  ],
+                  "minutes": [
+                    0
+                  ]
+                }
+              }
+            }
+          },
+          "actions": {
+            "Suspend_capacity": {
+              "type": "ApiConnection",
+              "inputs": {
+                "host": {
+                  "connection": {
+                    "name": "@parameters('$connections')['arm']['connectionId']"
+                  }
+                },
+                "method": "post",
+                "path": "[concat(variables('capacityPath'), '/suspend')]",
+                "queries": {
+                  "x-ms-api-version": "2023-11-01"
+                }
+              },
+              "runAfter": {}
+            }
+          }
+        },
+        "parameters": {
+          "$connections": {
+            "value": {
+              "arm": {
+                "connectionId": "[resourceId('Microsoft.Web/connections', variables('connName'))]",
+                "connectionName": "[variables('connName')]",
+                "id": "[variables('armApiId')]"
+              }
+            }
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "liveHours": {
+      "type": "string",
+      "value": "[concat(string(parameters('liveFromHour')), ':00 to ', string(parameters('liveToHour')), ':00 ', parameters('timeZone'))]"
+    }
+  }
+}
