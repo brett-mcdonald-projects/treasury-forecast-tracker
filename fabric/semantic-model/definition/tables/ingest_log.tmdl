@@ -1,0 +1,90 @@
+table ingest_log
+	lineageTag: d8c8ac38-daed-449b-a16f-96b483e01434
+
+	column run_ts
+		dataType: dateTime
+		formatString: yyyy-mm-dd hh:nn:ss
+		lineageTag: 2e31d2a8-899c-4849-8924-b1361c295a9c
+		summarizeBy: none
+		sourceColumn: run_ts
+
+		variation Variation
+			isDefault
+			relationship: 0812ffcd-ee92-45a5-bab1-1c6d81959f1d
+			defaultHierarchy: LocalDateTable_aff9bfc1-8691-415f-a7b9-f447734c2fc6.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+	column round_code
+		dataType: string
+		lineageTag: dd117eb6-8da9-44ba-a872-8f8fc6f64a0b
+		summarizeBy: none
+		sourceColumn: round_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column url
+		dataType: string
+		lineageTag: becbac43-859d-470b-ab01-6d00f426bfee
+		summarizeBy: none
+		sourceColumn: url
+
+		annotation SummarizationSetBy = Automatic
+
+	column http_status
+		dataType: double
+		formatString: 0
+		lineageTag: 7a512d5c-5383-40c1-96e2-8e05c34c3ac4
+		summarizeBy: sum
+		sourceColumn: http_status
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column sha256
+		dataType: string
+		lineageTag: 4b0582ea-ad97-4491-b6c3-f55ba6a70eec
+		summarizeBy: none
+		sourceColumn: sha256
+
+		annotation SummarizationSetBy = Automatic
+
+	column bytes
+		dataType: double
+		formatString: #,0
+		lineageTag: 20c5d30e-0f02-4a23-803f-1f9a4fcf7dca
+		summarizeBy: sum
+		sourceColumn: bytes
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column landing_path
+		dataType: string
+		lineageTag: fe97e575-b532-4db0-9685-fddd0f90029b
+		summarizeBy: none
+		sourceColumn: landing_path
+
+		annotation SummarizationSetBy = Automatic
+
+	column status
+		dataType: string
+		lineageTag: 1c2a32e3-d99f-456e-a338-486d3b655b4c
+		summarizeBy: none
+		sourceColumn: status
+
+		annotation SummarizationSetBy = Automatic
+
+	partition ingest_log = m
+		mode: import
+		source =
+				let
+				  Source = Sql.Database("<lakehouse-sql-endpoint>.datawarehouse.fabric.microsoft.com", "lh_tft"),
+				  #"Navigation 1" = Source{[Schema = "dbo", Item = "ingest_log"]}[Data]
+				in
+				  #"Navigation 1"
+
+	annotation PBI_ResultType = Table
+

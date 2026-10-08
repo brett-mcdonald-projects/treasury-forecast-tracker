@@ -19,7 +19,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "What the automated Fabric pipeline loaded on its latest run, and the checks it passed",
+                    "value": "What each run of the Fabric pipeline found, and the data checks passed at the last load",
                     "textStyle": {
                       "fontSize": "11pt",
                       "color": "#555555"

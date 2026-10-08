@@ -19,7 +19,7 @@
               {
                 "textRuns": [
                   {
-                    "value": "Loaded by an automated Microsoft Fabric pipeline",
+                    "value": "Loaded by a scheduled Microsoft Fabric pipeline (runs daily at 7:00 am)",
                     "textStyle": {
                       "fontSize": "11pt",
                       "color": "#555555"

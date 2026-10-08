@@ -1,0 +1,179 @@
+table fact_headline
+	lineageTag: 9f658b70-d61a-42dc-8bf1-169d43b2285d
+
+	measure Insight =
+			CALCULATE(
+			    VAR _m = SELECTEDVALUE(fact_headline[measure])
+			    VAR _isDollar = SELECTEDVALUE(fact_headline[unit]) = "$ million"
+			    VAR _dp = IF(_isDollar, 0, 1)
+			    VAR _latest = MAX(fact_headline[round_order])
+			    VAR _prev = CALCULATE(MAX(fact_headline[round_order]), fact_headline[round_order] < _latest)
+			    VAR _latestName = CALCULATE(MAX(fact_headline[round_name]), fact_headline[round_order] = _latest)
+			    VAR _prevName = CALCULATE(MAX(fact_headline[round_name]), fact_headline[round_order] = _prev)
+			    VAR _periods =
+			        CALCULATETABLE(
+			            SUMMARIZE(fact_headline, fact_headline[period_label], fact_headline[period_end]),
+			            fact_headline[round_order] = _latest,
+			            fact_headline[is_forecast] = TRUE()
+			        )
+			    VAR _both =
+			        FILTER(
+			            ADDCOLUMNS(
+			                _periods,
+			                "@new", CALCULATE(SUM(fact_headline[value]), fact_headline[round_order] = _latest),
+			                "@old", CALCULATE(SUM(fact_headline[value]), fact_headline[round_order] = _prev)
+			            ),
+			            NOT ISBLANK([@new]) && NOT ISBLANK([@old])
+			        )
+			    VAR _d = ADDCOLUMNS(_both, "@d", ROUND([@new], _dp) - ROUND([@old], _dp))
+			    VAR _n = COUNTROWS(_d)
+			    VAR _up = COUNTROWS(FILTER(_d, [@d] > 0)) + 0
+			    VAR _down = COUNTROWS(FILTER(_d, [@d] < 0)) + 0
+			    VAR _top = TOPN(1, _d, ABS([@d]), DESC, fact_headline[period_end], ASC)
+			    VAR _tp = MAXX(_top, fact_headline[period_label])
+			    VAR _td = MAXX(_top, [@d])
+			    VAR _tn = MAXX(_top, ROUND([@new], _dp))
+			    VAR _to = MAXX(_top, ROUND([@old], _dp))
+			    VAR _size = IF(_isDollar, FORMAT(ABS(_td), "$#,0") & " million", FORMAT(ABS(_td), "0.0") & " percentage points")
+			    VAR _from = IF(_isDollar, FORMAT(_to, "$#,0") & " million", FORMAT(_to, "0.0"))
+			    VAR _to2 = IF(_isDollar, FORMAT(_tn, "$#,0") & " million", FORMAT(_tn, "0.0"))
+			    RETURN
+			        SWITCH(
+			            TRUE(),
+			            ISBLANK(_m), "Select one measure to see what changed in the latest forecast round.",
+			            ISBLANK(_prev) || ISBLANK(_n), "No earlier forecast round is loaded to compare with.",
+			            _up + _down = 0, _m & ": the " & _latestName & " left all " & _n & " forecast periods unchanged from the " & _prevName & ".",
+			            _m & ": the " & _latestName & " revised " & (_up + _down) & " of the " & _n & " forecast periods it shares with the " & _prevName & " (" & _up & " up, " & _down & " down). The largest change is for " & _tp & ": " & IF(_td > 0, "up ", "down ") & _size & " (from " & _from & " to " & _to2 & ")."
+			        ),
+			    REMOVEFILTERS(fact_headline[round_name], fact_headline[round_code], fact_headline[round_order], fact_headline[period_label])
+			)
+		lineageTag: 3a03cd36-63f7-4fd0-9aef-434c49d6f890
+
+	measure 'Forecast value' = SUM(fact_headline[value])
+		lineageTag: 19e89c9a-53da-4358-97f7-147a9047a47a
+
+		formatStringDefinition = IF(SELECTEDVALUE(fact_headline[unit]) = "$ million", "$#,0", "0.0\%")
+
+	measure 'Chart title' = SELECTEDVALUE(fact_headline[measure], "Selected measure") & " by forecast round"
+		lineageTag: bac3f8fa-31bc-4321-84fd-0ebd5a55e1be
+
+	measure 'Unit label' = "Unit: " & SELECTEDVALUE(fact_headline[unit], "varies by measure")
+		lineageTag: c1ad1da4-e7de-48ba-ac5d-38de30b4e2f4
+
+	measure 'Table title' = "Figures by forecast round (" & SELECTEDVALUE(fact_headline[unit], "unit varies by measure") & ")"
+		lineageTag: 2f55a462-f455-46f9-a043-4550c3484fc1
+
+	column round_code
+		dataType: string
+		lineageTag: 8404a2eb-8029-4994-ae0e-565a2669a3d0
+		summarizeBy: none
+		sourceColumn: round_code
+
+		annotation SummarizationSetBy = Automatic
+
+	column period_label
+		dataType: string
+		lineageTag: 1f2d18c8-7cf2-4868-8287-e731fc901f9a
+		summarizeBy: none
+		sourceColumn: period_label
+
+		annotation SummarizationSetBy = Automatic
+
+	column period_end
+		dataType: dateTime
+		formatString: Long Date
+		lineageTag: 7da0dc60-2de4-4ed2-bdf9-6a33badd3f7d
+		summarizeBy: none
+		sourceColumn: period_end
+
+		variation Variation
+			isDefault
+			relationship: 198b2329-2aa8-4536-ba41-e13e3a0c17c6
+			defaultHierarchy: LocalDateTable_3d6c6dad-0c0e-48e6-b38f-6df10d5ea2a4.'Date Hierarchy'
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation UnderlyingDateTimeDataType = Date
+
+	column is_forecast
+		dataType: boolean
+		formatString: """TRUE"";""TRUE"";""FALSE"""
+		lineageTag: 741f5e65-9395-42e8-86fd-511f98d022a2
+		summarizeBy: none
+		sourceColumn: is_forecast
+
+		annotation SummarizationSetBy = Automatic
+
+	column value
+		dataType: double
+		lineageTag: fc0fe313-97d5-4397-9eac-8a3e98782b38
+		summarizeBy: sum
+		sourceColumn: value
+
+		annotation SummarizationSetBy = Automatic
+
+		annotation PBI_FormatHint = {"isGeneralNumber":true}
+
+	column measure
+		dataType: string
+		lineageTag: febf4585-4e4f-47eb-9964-f1bf540edb5e
+		summarizeBy: none
+		sourceColumn: measure
+		sortByColumn: measure_sort
+
+		annotation SummarizationSetBy = Automatic
+
+	column measure_group
+		dataType: string
+		lineageTag: 4223022d-916f-43fe-a0b7-789322b8155d
+		summarizeBy: none
+		sourceColumn: measure_group
+
+		annotation SummarizationSetBy = Automatic
+
+	column unit
+		dataType: string
+		lineageTag: 1bbd4192-79f1-4c57-b1d6-6128a70efc30
+		summarizeBy: none
+		sourceColumn: unit
+
+		annotation SummarizationSetBy = Automatic
+
+	column measure_sort
+		dataType: int64
+		formatString: 0
+		lineageTag: c20a6bfe-9248-4167-9aac-7e869494c52c
+		summarizeBy: sum
+		sourceColumn: measure_sort
+
+		annotation SummarizationSetBy = Automatic
+
+	column round_name
+		dataType: string
+		lineageTag: a561894a-0412-47f5-82f9-c3014855badb
+		summarizeBy: none
+		sourceColumn: round_name
+		sortByColumn: round_order
+
+		annotation SummarizationSetBy = Automatic
+
+	column round_order
+		dataType: int64
+		formatString: 0
+		lineageTag: 9febd46d-6c7b-4cc7-bfb9-4cbbbcd090d1
+		summarizeBy: sum
+		sourceColumn: round_order
+
+		annotation SummarizationSetBy = Automatic
+
+	partition fact_headline = m
+		mode: import
+		source =
+				let
+				  Source = Sql.Database("<lakehouse-sql-endpoint>.datawarehouse.fabric.microsoft.com", "lh_tft"),
+				  #"Navigation 1" = Source{[Schema = "dbo", Item = "fact_headline"]}[Data]
+				in
+				  #"Navigation 1"
+
+	annotation PBI_ResultType = Table
+

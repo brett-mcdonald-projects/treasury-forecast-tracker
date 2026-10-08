@@ -56,22 +56,17 @@
           "projections": [
             {
               "field": {
-                "Aggregation": {
+                "Measure": {
                   "Expression": {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "fact_headline"
-                        }
-                      },
-                      "Property": "value"
+                    "SourceRef": {
+                      "Entity": "fact_headline"
                     }
                   },
-                  "Function": 0
+                  "Property": "Forecast value"
                 }
               },
-              "queryRef": "Sum(fact_headline.value)",
-              "nativeQueryRef": "Sum of value",
+              "queryRef": "fact_headline.Forecast value",
+              "nativeQueryRef": "Forecast value",
               "displayName": "Value"
             }
           ]
@@ -108,8 +103,13 @@
             },
             "text": {
               "expr": {
-                "Literal": {
-                  "Value": "'Selected measure by forecast round'"
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_headline"
+                    }
+                  },
+                  "Property": "Chart title"
                 }
               }
             }
@@ -122,7 +122,19 @@
             "show": {
               "expr": {
                 "Literal": {
-                  "Value": "false"
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_headline"
+                    }
+                  },
+                  "Property": "Unit label"
                 }
               }
             }
@@ -130,57 +142,21 @@
         }
       ]
     },
-    "drillFilterOtherVisuals": true
-  },
-  "filterConfig": {
-    "filters": [
-      {
-        "name": "5f023b729d9080ee7fe2",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "fact_headline"
+    "drillFilterOtherVisuals": true,
+    "objects": {
+      "valueAxis": [
+        {
+          "properties": {
+            "labelDisplayUnits": {
+              "expr": {
+                "Literal": {
+                  "Value": "1D"
+                }
               }
-            },
-            "Property": "period_label"
+            }
           }
-        },
-        "type": "Categorical"
-      },
-      {
-        "name": "452c155b24d5c209271d",
-        "field": {
-          "Aggregation": {
-            "Expression": {
-              "Column": {
-                "Expression": {
-                  "SourceRef": {
-                    "Entity": "fact_headline"
-                  }
-                },
-                "Property": "value"
-              }
-            },
-            "Function": 0
-          }
-        },
-        "type": "Advanced"
-      },
-      {
-        "name": "1c3056a2555e915c0fd4",
-        "field": {
-          "Column": {
-            "Expression": {
-              "SourceRef": {
-                "Entity": "fact_headline"
-              }
-            },
-            "Property": "round_name"
-          }
-        },
-        "type": "Categorical"
-      }
-    ]
+        }
+      ]
+    }
   }
 }

@@ -72,7 +72,7 @@
                     }
                   },
                   {
-                    "value": "Select a measure above. The chart traces each round, the note above it states what changed in the latest round, and the table gives the figures. Data logs shows what the pipeline loaded and the checks it passed.",
+                    "value": "Select a measure above. The chart traces each round, the note above it states what changed in the latest round, and the table gives the figures. Data logs shows every pipeline run and the checks the data passed.",
                     "textStyle": {
                       "fontSize": "9pt"
                     }

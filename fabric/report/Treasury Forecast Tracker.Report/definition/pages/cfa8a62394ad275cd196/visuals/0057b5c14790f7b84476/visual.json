@@ -23,6 +23,21 @@
                       "Entity": "ingest_log"
                     }
                   },
+                  "Property": "run_ts"
+                }
+              },
+              "queryRef": "ingest_log.run_ts",
+              "nativeQueryRef": "run_ts",
+              "displayName": "Run time (UTC)"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "ingest_log"
+                    }
+                  },
                   "Property": "round_code"
                 }
               },
@@ -47,42 +62,32 @@
             },
             {
               "field": {
-                "Aggregation": {
+                "Column": {
                   "Expression": {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "ingest_log"
-                        }
-                      },
-                      "Property": "http_status"
+                    "SourceRef": {
+                      "Entity": "ingest_log"
                     }
                   },
-                  "Function": 0
+                  "Property": "http_status"
                 }
               },
-              "queryRef": "Sum(ingest_log.http_status)",
-              "nativeQueryRef": "Sum of http_status",
+              "queryRef": "ingest_log.http_status",
+              "nativeQueryRef": "http_status",
               "displayName": "HTTP status"
             },
             {
               "field": {
-                "Aggregation": {
+                "Column": {
                   "Expression": {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "ingest_log"
-                        }
-                      },
-                      "Property": "bytes"
+                    "SourceRef": {
+                      "Entity": "ingest_log"
                     }
                   },
-                  "Function": 0
+                  "Property": "bytes"
                 }
               },
-              "queryRef": "Sum(ingest_log.bytes)",
-              "nativeQueryRef": "Sum of bytes",
+              "queryRef": "ingest_log.bytes",
+              "nativeQueryRef": "bytes",
               "displayName": "File size (bytes)"
             },
             {
@@ -102,6 +107,23 @@
             }
           ]
         }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "ingest_log"
+                  }
+                },
+                "Property": "run_ts"
+              }
+            },
+            "direction": "Descending"
+          }
+        ]
       }
     },
     "objects": {
@@ -133,7 +155,7 @@
             "text": {
               "expr": {
                 "Literal": {
-                  "Value": "'Ingestion log: sources probed on the latest pipeline run (a 404 means the round is not yet published)'"
+                  "Value": "'Ingestion log: every run, newest first (unchanged = same file as last time; 404 = no file published for that round)'"
                 }
               }
             }

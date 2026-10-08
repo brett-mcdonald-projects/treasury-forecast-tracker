@@ -1,6 +1,6 @@
 # Status
 
-_Last updated: 2026-10-08 13:45 NZDT_
+_Last updated: 2026-10-08 14:20 NZDT_
 
 ## Working rules (set by Brett, 8 Oct)
 - One task at a time. Each reply gives everything needed for that one task, repeating earlier detail if necessary.
@@ -19,8 +19,8 @@ Recruiter Ben Dixon (ref BH-145793) called; client confirmed as the Treasury; he
 | T5 | Semantic models + report | Claude (Brett delegated all of it) | DONE 11:30. Import model `sm_forecast_tracker_public` (id 68cf5727-e77f-4361-ba33-7c4c286b0464); Direct Lake model `sm_forecast_tracker`. Report `Treasury Forecast Tracker` (id 92794f35-4986-4e37-935f-173abf578c2e), canvas 1280x720: page "Forecast tracker" (single-select slicer on fact_headline[measure], line chart period_label x value x round_name sorted by period_label asc, matrix, title + note text boxes, page filter period_end on or after 01/07/2022) and page "Pipeline and data quality" (ingest_log and test_results tables). No DAX measures or relationships yet (model-view editing was unresponsive in a background tab) |
 | T6 | Publish to web | Claude | DONE 11:30. First embed code showed a stale cached placeholder, so it was deleted and re-created. CURRENT PUBLIC LINK: https://app.fabric.microsoft.com/view?r=eyJrIjoiNzdhOWU5OGItZWYyYS00ODAxLTg0ODgtYzg2ODNlYTFmZTBjIiwidCI6ImZlNzZjMzBlLWY2OWUtNDczNy1hNzMwLTk0OGI1MDIxZTFiOCJ9 (verified rendering both pages). Saved edits can take up to an hour to show publicly. The link only works while the F2 capacity is running |
 | T7 | PDF solution brief | Claude | DONE 11:40: docs/brief/ (2-page brief + 2 pages exported from Power BI). States built vs not built, and that Claude wrote the code and did much of the configuration |
-| T8 | Send link + PDF to Ben Dixon | Brett | **CURRENT** |
-| Opt | Scheduled pipeline; Git connection; second page; Test/Prod workspaces | | only if time |
+| T8 | Send link + PDF to Ben Dixon | Brett | **CURRENT** (use the 2:15 pm PDF in Downloads, which describes the pipeline) |
+| Opt | Scheduled pipeline | Claude | DONE 14:00 (see round 2). Git connection and Test/Prod workspaces: not done |
 
 ## Report revision round 1 (requested by Brett 12:44, 8 Oct) - DONE 13:15, awaiting Brett's review
 All applied through the Fabric REST API (see `fabric/README.md`), checked in the report and on the public link.
@@ -48,6 +48,25 @@ Open after round 1:
 - Page 2 title text says a 404 means "not yet published"; Treasury now says the timing of the next update is undetermined. Wording is still accurate, could be softened.
 - Matrix shows two decimals for $ million figures and the chart has no unit label (cosmetic).
 
+## Round 2 (requested by Brett 13:45, 8 Oct) - DONE 14:20, awaiting Brett's review
+| # | Change | State |
+|---|---|---|
+| P1 | Scheduled pipeline | done. `pl_forecast_refresh` (id a3e8d7c9-57b2-4348-a429-4ca666f85963): activity "Ingest and transform" (notebook 9c0ed747..., retry 1) then "Refresh report model" (notebook `nb_refresh_model` 9ae5fe3e-3642-48b8-9fe8-1f4c4aa9e4af, runs only on success, retry 2). Schedule id ecdac20e-6e8d-4871-9b26-7f52ae8a0d6c: daily 07:00 "New Zealand Standard Time", 8 Oct to 31 Dec 2026, enabled. First scheduled run due 7:00 am 9 Oct: CHECK IT RAN |
+| P2 | Test runs | Run 1 00:49:34 to 00:51:46 UTC completed; run 2 00:53:29 to 00:56:11 UTC completed. Both found the three files unchanged by hash and HYEFU26 not published. Run 1 refreshed the model before the SQL endpoint had the new log rows, so `nb_refresh_model` now calls `sqlEndpoints/{id}/refreshMetadata` first; run 2 confirmed |
+| P3 | Unit of measure on the chart and table | done. Measures on `fact_headline`: `Forecast value` (dynamic format string: % or $), `Chart title`, `Unit label`, `Table title`. Chart title and subtitle and table title are bound to them; axis display units set to none |
+| P4 | Page 2 run history | done. Ingest table shows run time (UTC, yyyy-mm-dd hh:nn:ss), round, status, HTTP status, file size, source file; newest first |
+| P5 | PDF brief | done. docs/brief (4 pages), also in Brett's Downloads and sent in chat. "How it was built" now says Claude also wrote the DAX measures and built the pipeline |
+| P6 | Repo | pipeline JSON, `nb_refresh_model.py`, changed visuals, TMDL for `fact_headline` and `ingest_log` committed |
+
+Not built, and said so in the brief: failure alert on the pipeline; Dev/Test/Prod; reconciliation to published tables; actuals; theme file.
+
+Lessons from round 2:
+- TMDL: `formatStringDefinition = <DAX>` must come after the measure's `lineageTag`, with a blank line between; directly under the measure line gives an indentation error.
+- An import-model refresh straight after a notebook write can read stale data until the lakehouse SQL endpoint syncs.
+- The session transcript is trimmed when the conversation is compacted, so base64 chunks read into it must be rebuilt into the file straight away. Run the chunk-write and the page read as separate, sequential calls.
+- Pipeline and job APIs from the page: create `POST /v1/workspaces/{ws}/items` (type DataPipeline), run `POST /items/{id}/jobs/instances?jobType=Pipeline`, schedule `POST /items/{id}/jobs/Pipeline/schedules`. Job status lags by a minute or so.
+- PDF export of one page: `ExportTo` with `powerBIReportConfiguration.pages:[{pageName}]`.
+
 ## Facts learned 8 Oct
 - Source files are tidy: `{round}-economic-forecasts-data.xlsx` has an economic sheet (30 quarterly series) and a fiscal sheet (18 June-year series + 'Is forecast' flag). Rounds confirmed: BEFU26, PREFU26. HYEFU25 has no file of this type in the Data Library (notebook probes for it and logs the result).
 - Mac bridge: Downloads folder granted; files staged from /Users/brettkircher/Downloads. Neither the cloud workspace nor the Mac bridge can download from budget.govt.nz; Brett downloads by hand.
@@ -63,10 +82,10 @@ Open after round 1:
 
 ## After the deadline (backlog order)
 1. Brett reviews report + brief; fix anything he flags.
-2. Delete `zz_publish_test`; add relationships/dim tables; theme; unit label on the chart; number formats per measure. (Done 8 Oct: insight measure, chronological sort, friendly field names.)
-3. Scheduled pipeline + failure alert; connect workspace to this repo (Fabric Git integration); Test/Prod workspaces + deployment pipeline; UAT run.
+2. Delete `zz_publish_test`; add relationships/dim tables; theme. (Done 8 Oct: insight measure, chronological sort, friendly field names, unit labels, number formats per measure.)
+3. Failure alert on the pipeline (scheduled pipeline itself done 8 Oct); connect workspace to this repo (Fabric Git integration); Test/Prod workspaces + deployment pipeline; UAT run.
 4. Stats NZ actuals as source 2.
-5. Capacity: F2 bills hourly from the NZ$353 Azure credit (expires 4 Nov 2026); pausing it takes the public link down.
+5. Capacity: F2 bills hourly from the NZ$353 Azure credit (expires 4 Nov 2026); pausing it takes the public link down and stops the 7:00 am schedule.
 
 ## Blockers
 - None known. Risk: new pay-as-you-go subscriptions can have no Fabric quota; fallback is a Power BI-only build, labelled as such.
@@ -75,4 +94,4 @@ Open after round 1:
 - Brett works on a Mac in the browser only.
 - Application for the Reporting Developer contract was submitted 7 Oct 2026 describing this demo as in progress; send the recruiter the public link at v0.1.
 - Never describe the demo as further along than it is.
-- Capacity costs money while running: remind Brett to pause it at the end of every session.
+- Capacity costs money while running. While the recruiter and client may open the link it stays running (the link and the schedule both need it); remind Brett of the cost and the 4 Nov credit expiry, and to pause it once the link is no longer needed.

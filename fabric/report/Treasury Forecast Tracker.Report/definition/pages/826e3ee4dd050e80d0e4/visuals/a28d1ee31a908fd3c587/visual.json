@@ -57,22 +57,17 @@
           "projections": [
             {
               "field": {
-                "Aggregation": {
+                "Measure": {
                   "Expression": {
-                    "Column": {
-                      "Expression": {
-                        "SourceRef": {
-                          "Entity": "fact_headline"
-                        }
-                      },
-                      "Property": "value"
+                    "SourceRef": {
+                      "Entity": "fact_headline"
                     }
                   },
-                  "Function": 0
+                  "Property": "Forecast value"
                 }
               },
-              "queryRef": "Sum(fact_headline.value)",
-              "nativeQueryRef": "Sum of value",
+              "queryRef": "fact_headline.Forecast value",
+              "nativeQueryRef": "Forecast value",
               "displayName": "Value"
             }
           ]
@@ -115,8 +110,13 @@
             },
             "text": {
               "expr": {
-                "Literal": {
-                  "Value": "'Figures by forecast round'"
+                "Measure": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_headline"
+                    }
+                  },
+                  "Property": "Table title"
                 }
               }
             }

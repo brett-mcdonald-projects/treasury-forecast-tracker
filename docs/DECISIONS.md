@@ -13,8 +13,12 @@
 | 9 | 2026-10-08 | Public report runs on an import-mode copy of the model | Publish to web refused the Direct Lake report | Power BI Embedded; sharing inside the tenant only |
 | 10 | 2026-10-08 | Report and model changes are made as code through the Fabric REST API (getDefinition / updateDefinition) and the result is exported to `fabric/` | Repeatable, reviewable, and far faster than clicking; works from a Mac browser | Hand editing in the web designer |
 | 11 | 2026-10-08 | The automatic insight is a DAX measure in the model, shown in a one-cell table | Report-level measures are not supported by Publish to web; card visuals truncated long text | Sentence generated in the notebook; Copilot narrative (needs a larger capacity) |
+| 12 | 2026-10-08 | The pipeline is two notebook activities; the model refresh is called from a notebook through the Power BI REST API | A semantic-model-refresh activity needs a connection that must be signed in by hand; a notebook uses the run identity and can wait for and check the result | Semantic model refresh activity; scheduled refresh on the model (no ordering with the load) |
+| 13 | 2026-10-08 | The refresh notebook first syncs the lakehouse SQL endpoint (refreshMetadata) | The first pipeline run refreshed the import model before the endpoint showed the rows just written | Fixed wait; point the import model at the Delta tables directly |
+| 14 | 2026-10-08 | Schedule: daily at 7:00 am New Zealand time, to 31 Dec 2026 | The source changes a few times a year; a daily probe is cheap because unchanged files are skipped by hash | Hourly; event-driven (no event source available) |
+| 15 | 2026-10-08 | Units are shown through model measures (dynamic titles and a dynamic format string) | One chart and one table serve measures in different units | A separate visual per unit |
 
 ## Open
 - Where to store the Stats NZ API key (before v0.2).
-- How scheduled runs work with a paused capacity (decide in phase 2: fixed daily window, or public report hosted in a separate Pro workspace).
+- The schedule and the public link both need the capacity running; it is left running for now and draws on the Azure credit (expires 4 Nov 2026). Decide before then: fixed daily window with pause and resume, or public report hosted in a separate Pro workspace.
 - Power BI trial started 2026-10-07 on the admin user; note its expiry for the public link.
