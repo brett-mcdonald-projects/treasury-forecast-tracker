@@ -17,8 +17,9 @@
 | 13 | 2026-10-08 | The refresh notebook first syncs the lakehouse SQL endpoint (refreshMetadata) | The first pipeline run refreshed the import model before the endpoint showed the rows just written | Fixed wait; point the import model at the Delta tables directly |
 | 14 | 2026-10-08 | Schedule: daily at 7:00 am New Zealand time, to 31 Dec 2026 | The source changes a few times a year; a daily probe is cheap because unchanged files are skipped by hash | Hourly; event-driven (no event source available) |
 | 15 | 2026-10-08 | Units are shown through model measures (dynamic titles and a dynamic format string) | One chart and one table serve measures in different units | A separate visual per unit |
+| 16 | 2026-10-08 | Capacity runs 7:00 am to 10:00 pm NZ time, switched by two Logic Apps using an ARM connection signed in as Brett | 15 hours a day uses most of the trial credit by 4 Nov with about NZ$45 spare; the ARM connector needs no role assignment, which the working account cannot grant | Automation runbook with managed identity (needs Owner); 12 hours (leaves NZ$105 unused); 24 hours (credit gone by 27 Oct) |
 
 ## Open
 - Where to store the Stats NZ API key (before v0.2).
-- The schedule and the public link both need the capacity running; it is left running for now and draws on the Azure credit (expires 4 Nov 2026). Decide before then: fixed daily window with pause and resume, or public report hosted in a separate Pro workspace.
+- The subscription is a free trial that ends 4 Nov 2026 (credit US$200). Decide before then whether to upgrade to pay-as-you-go (about NZ$12 a day at 15 hours) or let the demo lapse; the public link dies with the capacity.
 - Power BI trial started 2026-10-07 on the admin user; note its expiry for the public link.

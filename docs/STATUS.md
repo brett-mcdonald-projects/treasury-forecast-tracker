@@ -1,6 +1,6 @@
 # Status
 
-_Last updated: 2026-10-08 14:20 NZDT_
+_Last updated: 2026-10-08 17:30 NZDT_
 
 ## Working rules (set by Brett, 8 Oct)
 - One task at a time. Each reply gives everything needed for that one task, repeating earlier detail if necessary.
@@ -67,6 +67,17 @@ Lessons from round 2:
 - Pipeline and job APIs from the page: create `POST /v1/workspaces/{ws}/items` (type DataPipeline), run `POST /items/{id}/jobs/instances?jobType=Pipeline`, schedule `POST /items/{id}/jobs/Pipeline/schedules`. Job status lags by a minute or so.
 - PDF export of one page: `ExportTo` with `powerBIReportConfiguration.pages:[{pageName}]`.
 
+## Round 3 (requested by Brett 15:42, 8 Oct): live hours and cost - DONE 17:30
+| # | Item | State |
+|---|---|---|
+| C1 | Capacity live 7:00 am to 10:00 pm NZ time daily | live. `infra/capacity-schedule.json` -> Logic Apps `la-tft-capacity-resume` (07:00) and `la-tft-capacity-suspend` (22:00, was 19:00 until 17:25) in rg-tft (australiaeast); ARM connection `arm-tft` authorised by Brett 17:15 (status Connected). First suspend due 10:00 pm 8 Oct, first resume 7:00 am 9 Oct: CHECK BOTH RAN (Logic App run history) |
+| C2 | Note on the report | done: "Live 7:00 am to 10:00 pm NZ time, daily..." text box on both pages (typed text; the report cannot read the Logic App schedule, so change both together) |
+| C3 | Pipeline moved to 07:30 | done, so it never runs before the 07:00 resume |
+| C4 | Costs | Subscription is an Azure free trial: US$200 (shown as NZ$353) credit, 27 days left on 8 Oct, expires 4 Nov; then the subscription is disabled unless upgraded to pay-as-you-go. Cost Management showed NZ$0.00 at 15:50 (usage posts 8 to 24 hours late). Rate: NZ$0.3887 per CU-hour, F2 = NZ$0.7774/h: NZ$18.66/day at 24 h, NZ$11.66/day at 15 h. Projection at 15 h/day: about NZ$303 to 4 Nov, leaving about NZ$45. Other resources in the subscription: rg-qa-register-test (static web app, Free; SQL serverless GP_S_Gen5 database) |
+| C5 | PDF brief | source updated with the live hours; the PDF already with the recruiter is the 2:15 pm version and is not being re-sent. Rebuild from docs/brief/solution-brief.html when needed |
+
+Lesson: redeploying the template with the connection resource included may reset its authorisation; to change only the hours, deploy a copy without the `Microsoft.Web/connections` resource (what-if first).
+
 ## Facts learned 8 Oct
 - Source files are tidy: `{round}-economic-forecasts-data.xlsx` has an economic sheet (30 quarterly series) and a fiscal sheet (18 June-year series + 'Is forecast' flag). Rounds confirmed: BEFU26, PREFU26. HYEFU25 has no file of this type in the Data Library (notebook probes for it and logs the result).
 - Mac bridge: Downloads folder granted; files staged from /Users/brettkircher/Downloads. Neither the cloud workspace nor the Mac bridge can download from budget.govt.nz; Brett downloads by hand.
@@ -94,4 +105,4 @@ Lessons from round 2:
 - Brett works on a Mac in the browser only.
 - Application for the Reporting Developer contract was submitted 7 Oct 2026 describing this demo as in progress; send the recruiter the public link at v0.1.
 - Never describe the demo as further along than it is.
-- Capacity costs money while running. While the recruiter and client may open the link it stays running (the link and the schedule both need it); remind Brett of the cost and the 4 Nov credit expiry, and to pause it once the link is no longer needed.
+- Capacity now runs 7:00 am to 10:00 pm NZ time by schedule (NZ$11.66 a day). The free trial ends 4 Nov; decide before then whether to upgrade to pay-as-you-go or let the demo lapse.

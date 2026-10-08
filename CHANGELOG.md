@@ -1,6 +1,7 @@
 # Changelog
 
 ## Unreleased
+- Capacity live hours 7:00 am to 10:00 pm NZ time (two Logic Apps, `infra/`), live-hours note on both report pages, pipeline moved to 7:30 am, brief source updated.
 
 ## v0.3 - 2026-10-08
 - Pipeline `pl_forecast_refresh`: ingest notebook, then `nb_refresh_model` (sync the lakehouse SQL endpoint, refresh the import model, wait for the result). Scheduled daily at 7:00 am New Zealand time.

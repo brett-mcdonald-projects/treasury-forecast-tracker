@@ -16,7 +16,7 @@
     },
     "liveToHour": {
       "type": "int",
-      "defaultValue": 19
+      "defaultValue": 22
     },
     "timeZone": {
       "type": "string",
