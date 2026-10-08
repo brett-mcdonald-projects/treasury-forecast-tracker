@@ -1,0 +1,91 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "1fb001c67ba084ee86b1",
+  "position": {
+    "x": 20,
+    "y": 360,
+    "z": 1,
+    "height": 290,
+    "width": 1240,
+    "tabOrder": 1
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "test_results"
+                    }
+                  },
+                  "Property": "test"
+                }
+              },
+              "queryRef": "test_results.test",
+              "nativeQueryRef": "test",
+              "displayName": "Check"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "test_results"
+                    }
+                  },
+                  "Property": "passed"
+                }
+              },
+              "queryRef": "test_results.passed",
+              "nativeQueryRef": "passed",
+              "displayName": "Passed"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "test_results"
+                    }
+                  },
+                  "Property": "detail"
+                }
+              },
+              "queryRef": "test_results.detail",
+              "nativeQueryRef": "detail",
+              "displayName": "Detail"
+            }
+          ]
+        }
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Automated data checks: all must pass before the reporting tables refresh'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

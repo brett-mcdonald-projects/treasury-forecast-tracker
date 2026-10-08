@@ -1,0 +1,38 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "aa08src0000000000000",
+  "position": {
+    "x": 640,
+    "y": 658,
+    "z": 27,
+    "height": 56,
+    "width": 330,
+    "tabOrder": 27
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Source: the Treasury, Economic and Fiscal Update data files (budget.govt.nz)",
+                    "textStyle": {
+                      "color": "#555555",
+                      "fontSize": "9pt"
+                    }
+                  }
+                ],
+                "horizontalTextAlignment": "center"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

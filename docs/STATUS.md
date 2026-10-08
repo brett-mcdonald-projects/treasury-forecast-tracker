@@ -1,6 +1,6 @@
 # Status
 
-_Last updated: 2026-10-08 12:50 NZDT_
+_Last updated: 2026-10-08 13:20 NZDT_
 
 ## Working rules (set by Brett, 8 Oct)
 - One task at a time. Each reply gives everything needed for that one task, repeating earlier detail if necessary.
@@ -22,20 +22,28 @@ Recruiter Ben Dixon (ref BH-145793) called; client confirmed as the Treasury; he
 | T8 | Send link + PDF to Ben Dixon | Brett | **CURRENT** |
 | Opt | Scheduled pipeline; Git connection; second page; Test/Prod workspaces | | only if time |
 
-## Report revision round 1 (requested by Brett 12:44, 8 Oct) - CURRENT
+## Report revision round 1 (requested by Brett 12:44, 8 Oct) - DONE 13:15, awaiting Brett's review
+All applied through the Fabric REST API (see `fabric/README.md`), checked in the report and on the public link.
 | # | Change | State |
 |---|---|---|
-| R1 | Slicer wide enough that measure labels are not cut off | todo |
-| R2 | Rename `period_label` to "Period" (and tidy `measure` header) | todo |
-| R3 | Caveat "Independent demonstration by Brett McDonald; not a Treasury product" at top, separate from title | todo |
-| R4 | "Loaded by an automated Microsoft Fabric pipeline" under the title, smaller | todo |
-| R5 | "Source: ..." text bottom middle | todo |
-| R6 | "Created by Brett McDonald on [date]" bottom right | todo |
-| R7 | "Source data published on [date]" per source, bottom left (dates must be verified, not guessed) | todo |
-| R8 | "Next publishing date for sources ..." to the right of R7 (verify) | todo |
-| R9 | "Purpose and function" card: what it does, why, how to use it | todo |
-| R10 | Page 1 link "Data logs" to page 2; page 2 "Return to tracker" | todo |
-| R11 | Auto-generated insights: Brett asked whether possible. Proposal: rule-based insight sentence per measure generated in the notebook (largest revision between the latest two rounds), stored as a column on fact_headline so the slicer drives it with no relationships | proposed |
+| R1 | Slicer wide enough that measure labels are not cut off | done (330 wide, header "Measure") |
+| R2 | `period_label` shown as "Period" (also "Forecast round", "Value") | done |
+| R3 | Caveat "Independent demonstration by Brett McDonald; not a Treasury product" at top, separate from title | done (yellow banner top right, both pages) |
+| R4 | "Loaded by an automated Microsoft Fabric pipeline" under the title, smaller | done |
+| R5 | "Source: ..." text bottom middle | done |
+| R6 | "Created by Brett McDonald on 8 October 2026" bottom right | done (both pages; static text) |
+| R7 | "Source data published" per source, bottom left | done: HYEFU 2025 16 Dec 2025; BEFU 2026 28 May 2026; PREFU 2026 29 Sep 2026 (verified by web search 8 Oct; static text) |
+| R8 | "Next publishing date" to the right of R7 | done: "not yet set" (Treasury: timing of next forecast update to be determined later) |
+| R9 | "Purpose and function" card: what it does, why, how to use it | done |
+| R10 | Page 1 button "Data logs" to page 2; page 2 "Return to tracker" | done, both navigate (also on the public link) |
+| R11 | Auto-generated insight | done: DAX measure `fact_headline[Insight]` in the import model, shown in a one-cell table above the chart. Spot-checked against the raw BEFU26 and PREFU26 files (OBEGAL excl. ACC 2026/27: -11,441 to -6,750). Also set sort-by columns (round_name by round_order, measure by measure_sort) so the legend is chronological |
+
+Current page 1 layout (1280x720): title + subtitle top left; caveat + "Data logs" top right; slicer (20,92,330x330); purpose card (20,430,330x220); insight (365,92,895x104); chart (365,202,895x226); matrix (365,434,895x216); four footer texts at y=658.
+
+Open after round 1:
+- PDF brief (docs/brief) still shows the OLD report layout: regenerate if Brett wants it to match.
+- Page 2 title text says a 404 means "not yet published"; Treasury now says the timing of the next update is undetermined. Wording is still accurate, could be softened.
+- Matrix shows two decimals for $ million figures and the chart has no unit label (cosmetic).
 
 ## Facts learned 8 Oct
 - Source files are tidy: `{round}-economic-forecasts-data.xlsx` has an economic sheet (30 quarterly series) and a fiscal sheet (18 June-year series + 'Is forecast' flag). Rounds confirmed: BEFU26, PREFU26. HYEFU25 has no file of this type in the Data Library (notebook probes for it and logs the result).
@@ -47,11 +55,12 @@ Recruiter Ben Dixon (ref BH-145793) called; client confirmed as the Treasury; he
 - Claude can drive Brett's Chrome directly from this session (tab group already open). Extension does not run in incognito.
 
 - Two Chrome browsers are connected to Claude: Browser 1 (Mac, correct, tab group has the Fabric tabs signed in as brett@) and Browser 2 (Windows, NOT to be used; the session flipped to it once mid-task). If tabs vanish, call list_connected_browsers and select the Mac one.
-- Format-pane routine that works: select visual > Format > General > Properties; numeric Size/Position inputs accept typed values + Tab; for text boxes use find + form_input because the floating text toolbar covers the inputs.
+- FASTEST WAY TO EDIT THE REPORT OR MODEL: paste `fabric/tools/fabric_api_helpers.js` into the report tab with the javascript tool (it is lost on every page reload), then getAny / edit / putAny. JS calls must be `await (async()=>{...})()`. To read long output, write it into an `<article id="__dump">` element and use get_page_text. Model updates kept the imported data; refresh via the API works (proved 8 Oct). Close any model-view tab before updating the model.
+- Format-pane routine that works (slow fallback): select visual > Format > General > Properties; numeric Size/Position inputs accept typed values + Tab; for text boxes use find + form_input because the floating text toolbar covers the inputs.
 
 ## After the deadline (backlog order)
 1. Brett reviews report + brief; fix anything he flags.
-2. Delete `zz_publish_test`; add relationships/dim tables and a revision measure; sort rounds chronologically; friendly field names; theme.
+2. Delete `zz_publish_test`; add relationships/dim tables; theme; unit label on the chart; number formats per measure. (Done 8 Oct: insight measure, chronological sort, friendly field names.)
 3. Scheduled pipeline + failure alert; connect workspace to this repo (Fabric Git integration); Test/Prod workspaces + deployment pipeline; UAT run.
 4. Stats NZ actuals as source 2.
 5. Capacity: F2 bills hourly from the NZ$353 Azure credit (expires 4 Nov 2026); pausing it takes the public link down.

@@ -1,0 +1,186 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "50bdd6f3a9f8186246e1",
+  "position": {
+    "x": 365,
+    "y": 202,
+    "z": 1,
+    "height": 226,
+    "width": 895,
+    "tabOrder": 1
+  },
+  "visual": {
+    "visualType": "lineChart",
+    "query": {
+      "queryState": {
+        "Category": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_headline"
+                    }
+                  },
+                  "Property": "period_label"
+                }
+              },
+              "queryRef": "fact_headline.period_label",
+              "nativeQueryRef": "period_label",
+              "active": true,
+              "displayName": "Period"
+            }
+          ]
+        },
+        "Series": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_headline"
+                    }
+                  },
+                  "Property": "round_name"
+                }
+              },
+              "queryRef": "fact_headline.round_name",
+              "nativeQueryRef": "round_name",
+              "displayName": "Forecast round"
+            }
+          ]
+        },
+        "Y": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "fact_headline"
+                        }
+                      },
+                      "Property": "value"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(fact_headline.value)",
+              "nativeQueryRef": "Sum of value",
+              "displayName": "Value"
+            }
+          ]
+        }
+      },
+      "sortDefinition": {
+        "sort": [
+          {
+            "field": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "fact_headline"
+                  }
+                },
+                "Property": "period_label"
+              }
+            },
+            "direction": "Ascending"
+          }
+        ]
+      }
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Selected measure by forecast round'"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "subTitle": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  },
+  "filterConfig": {
+    "filters": [
+      {
+        "name": "5f023b729d9080ee7fe2",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "fact_headline"
+              }
+            },
+            "Property": "period_label"
+          }
+        },
+        "type": "Categorical"
+      },
+      {
+        "name": "452c155b24d5c209271d",
+        "field": {
+          "Aggregation": {
+            "Expression": {
+              "Column": {
+                "Expression": {
+                  "SourceRef": {
+                    "Entity": "fact_headline"
+                  }
+                },
+                "Property": "value"
+              }
+            },
+            "Function": 0
+          }
+        },
+        "type": "Advanced"
+      },
+      {
+        "name": "1c3056a2555e915c0fd4",
+        "field": {
+          "Column": {
+            "Expression": {
+              "SourceRef": {
+                "Entity": "fact_headline"
+              }
+            },
+            "Property": "round_name"
+          }
+        },
+        "type": "Categorical"
+      }
+    ]
+  }
+}

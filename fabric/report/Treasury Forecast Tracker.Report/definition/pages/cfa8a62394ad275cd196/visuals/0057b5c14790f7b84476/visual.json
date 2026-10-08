@@ -1,0 +1,146 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "0057b5c14790f7b84476",
+  "position": {
+    "x": 20,
+    "y": 100,
+    "z": 0,
+    "height": 245,
+    "width": 1240,
+    "tabOrder": 0
+  },
+  "visual": {
+    "visualType": "tableEx",
+    "query": {
+      "queryState": {
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "ingest_log"
+                    }
+                  },
+                  "Property": "round_code"
+                }
+              },
+              "queryRef": "ingest_log.round_code",
+              "nativeQueryRef": "round_code",
+              "displayName": "Round"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "ingest_log"
+                    }
+                  },
+                  "Property": "status"
+                }
+              },
+              "queryRef": "ingest_log.status",
+              "nativeQueryRef": "status",
+              "displayName": "Status"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "ingest_log"
+                        }
+                      },
+                      "Property": "http_status"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(ingest_log.http_status)",
+              "nativeQueryRef": "Sum of http_status",
+              "displayName": "HTTP status"
+            },
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "ingest_log"
+                        }
+                      },
+                      "Property": "bytes"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(ingest_log.bytes)",
+              "nativeQueryRef": "Sum of bytes",
+              "displayName": "File size (bytes)"
+            },
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "ingest_log"
+                    }
+                  },
+                  "Property": "url"
+                }
+              },
+              "queryRef": "ingest_log.url",
+              "nativeQueryRef": "url",
+              "displayName": "Source file"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "total": [
+        {
+          "properties": {
+            "totals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Ingestion log: sources probed on the latest pipeline run (a 404 means the round is not yet published)'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

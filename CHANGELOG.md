@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+## v0.2 - 2026-10-08
+- Report layout revised: caveat banner, subtitle, "Purpose and function" card, source and publication-date footers, created-by line, wider measure slicer, friendly field names.
+- Page navigation buttons: "Data logs" and "Return to tracker".
+- Automatic insight: `Insight` measure states what the latest forecast round changed for the selected measure.
+- Forecast rounds now sort chronologically and measures in a fixed order (sort-by columns).
+- Report definition (PBIR), measure and API helpers added under `fabric/`.
+
 ## v0.1 - 2026-10-08
 - Ingest and transform notebook: source registry, hash-based change detection, raw landing, star schema, eight data tests.
 - Lakehouse `lh_tft` loaded with three forecast rounds (HYEFU25, BEFU26, PREFU26).

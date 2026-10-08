@@ -1,0 +1,128 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "a28d1ee31a908fd3c587",
+  "position": {
+    "x": 365,
+    "y": 434,
+    "z": 2,
+    "height": 216,
+    "width": 895,
+    "tabOrder": 2
+  },
+  "visual": {
+    "visualType": "pivotTable",
+    "query": {
+      "queryState": {
+        "Columns": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_headline"
+                    }
+                  },
+                  "Property": "round_name"
+                }
+              },
+              "queryRef": "fact_headline.round_name",
+              "nativeQueryRef": "round_name",
+              "active": true,
+              "displayName": "Forecast round"
+            }
+          ]
+        },
+        "Rows": {
+          "projections": [
+            {
+              "field": {
+                "Column": {
+                  "Expression": {
+                    "SourceRef": {
+                      "Entity": "fact_headline"
+                    }
+                  },
+                  "Property": "period_label"
+                }
+              },
+              "queryRef": "fact_headline.period_label",
+              "nativeQueryRef": "period_label",
+              "active": true,
+              "displayName": "Period"
+            }
+          ]
+        },
+        "Values": {
+          "projections": [
+            {
+              "field": {
+                "Aggregation": {
+                  "Expression": {
+                    "Column": {
+                      "Expression": {
+                        "SourceRef": {
+                          "Entity": "fact_headline"
+                        }
+                      },
+                      "Property": "value"
+                    }
+                  },
+                  "Function": 0
+                }
+              },
+              "queryRef": "Sum(fact_headline.value)",
+              "nativeQueryRef": "Sum of value",
+              "displayName": "Value"
+            }
+          ]
+        }
+      }
+    },
+    "objects": {
+      "subTotals": [
+        {
+          "properties": {
+            "columnSubtotals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            },
+            "rowSubtotals": {
+              "expr": {
+                "Literal": {
+                  "Value": "false"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true,
+    "visualContainerObjects": {
+      "title": [
+        {
+          "properties": {
+            "show": {
+              "expr": {
+                "Literal": {
+                  "Value": "true"
+                }
+              }
+            },
+            "text": {
+              "expr": {
+                "Literal": {
+                  "Value": "'Figures by forecast round'"
+                }
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}

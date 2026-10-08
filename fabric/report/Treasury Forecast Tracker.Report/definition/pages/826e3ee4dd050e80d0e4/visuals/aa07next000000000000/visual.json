@@ -1,0 +1,45 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "aa07next000000000000",
+  "position": {
+    "x": 380,
+    "y": 658,
+    "z": 26,
+    "height": 56,
+    "width": 250,
+    "tabOrder": 26
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Next publishing date: ",
+                    "textStyle": {
+                      "color": "#555555",
+                      "fontSize": "9pt",
+                      "fontWeight": "bold"
+                    }
+                  },
+                  {
+                    "value": "not yet set. The Treasury has said the timing of its next forecast update will be determined later.",
+                    "textStyle": {
+                      "color": "#555555",
+                      "fontSize": "9pt"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

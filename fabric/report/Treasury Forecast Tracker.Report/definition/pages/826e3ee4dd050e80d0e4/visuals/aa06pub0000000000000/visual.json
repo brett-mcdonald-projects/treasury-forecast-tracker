@@ -1,0 +1,45 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "aa06pub0000000000000",
+  "position": {
+    "x": 20,
+    "y": 658,
+    "z": 25,
+    "height": 56,
+    "width": 350,
+    "tabOrder": 25
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "Source data published: ",
+                    "textStyle": {
+                      "color": "#555555",
+                      "fontSize": "9pt",
+                      "fontWeight": "bold"
+                    }
+                  },
+                  {
+                    "value": "Half Year Update 2025 on 16 Dec 2025; Budget Update 2026 on 28 May 2026; Pre-election Update 2026 on 29 Sep 2026.",
+                    "textStyle": {
+                      "color": "#555555",
+                      "fontSize": "9pt"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

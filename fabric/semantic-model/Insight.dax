@@ -1,0 +1,56 @@
+// Measure: fact_headline[Insight]
+// Model:   sm_forecast_tracker_public (import)
+// Added:   2026-10-08
+// Purpose: one sentence, recalculated from the loaded data, stating what the latest
+//          forecast round changed for the measure selected in the slicer.
+// Rules:   compares the latest round with the one before it, over the periods that are
+//          forecasts in the latest round and present in both. Values are rounded before
+//          differencing (1 dp, or whole $ million) so the sentence matches the table.
+// Note:    it ignores chart and table clicks on round or period, so the sentence always
+//          describes the whole measure.
+Insight =
+CALCULATE(
+    VAR _m = SELECTEDVALUE(fact_headline[measure])
+    VAR _isDollar = SELECTEDVALUE(fact_headline[unit]) = "$ million"
+    VAR _dp = IF(_isDollar, 0, 1)
+    VAR _latest = MAX(fact_headline[round_order])
+    VAR _prev = CALCULATE(MAX(fact_headline[round_order]), fact_headline[round_order] < _latest)
+    VAR _latestName = CALCULATE(MAX(fact_headline[round_name]), fact_headline[round_order] = _latest)
+    VAR _prevName = CALCULATE(MAX(fact_headline[round_name]), fact_headline[round_order] = _prev)
+    VAR _periods =
+        CALCULATETABLE(
+            SUMMARIZE(fact_headline, fact_headline[period_label], fact_headline[period_end]),
+            fact_headline[round_order] = _latest,
+            fact_headline[is_forecast] = TRUE()
+        )
+    VAR _both =
+        FILTER(
+            ADDCOLUMNS(
+                _periods,
+                "@new", CALCULATE(SUM(fact_headline[value]), fact_headline[round_order] = _latest),
+                "@old", CALCULATE(SUM(fact_headline[value]), fact_headline[round_order] = _prev)
+            ),
+            NOT ISBLANK([@new]) && NOT ISBLANK([@old])
+        )
+    VAR _d = ADDCOLUMNS(_both, "@d", ROUND([@new], _dp) - ROUND([@old], _dp))
+    VAR _n = COUNTROWS(_d)
+    VAR _up = COUNTROWS(FILTER(_d, [@d] > 0)) + 0
+    VAR _down = COUNTROWS(FILTER(_d, [@d] < 0)) + 0
+    VAR _top = TOPN(1, _d, ABS([@d]), DESC, fact_headline[period_end], ASC)
+    VAR _tp = MAXX(_top, fact_headline[period_label])
+    VAR _td = MAXX(_top, [@d])
+    VAR _tn = MAXX(_top, ROUND([@new], _dp))
+    VAR _to = MAXX(_top, ROUND([@old], _dp))
+    VAR _size = IF(_isDollar, FORMAT(ABS(_td), "$#,0") & " million", FORMAT(ABS(_td), "0.0") & " percentage points")
+    VAR _from = IF(_isDollar, FORMAT(_to, "$#,0") & " million", FORMAT(_to, "0.0"))
+    VAR _to2 = IF(_isDollar, FORMAT(_tn, "$#,0") & " million", FORMAT(_tn, "0.0"))
+    RETURN
+        SWITCH(
+            TRUE(),
+            ISBLANK(_m), "Select one measure to see what changed in the latest forecast round.",
+            ISBLANK(_prev) || ISBLANK(_n), "No earlier forecast round is loaded to compare with.",
+            _up + _down = 0, _m & ": the " & _latestName & " left all " & _n & " forecast periods unchanged from the " & _prevName & ".",
+            _m & ": the " & _latestName & " revised " & (_up + _down) & " of the " & _n & " forecast periods it shares with the " & _prevName & " (" & _up & " up, " & _down & " down). The largest change is for " & _tp & ": " & IF(_td > 0, "up ", "down ") & _size & " (from " & _from & " to " & _to2 & ")."
+        ),
+    REMOVEFILTERS(fact_headline[round_name], fact_headline[round_code], fact_headline[round_order], fact_headline[period_label])
+)

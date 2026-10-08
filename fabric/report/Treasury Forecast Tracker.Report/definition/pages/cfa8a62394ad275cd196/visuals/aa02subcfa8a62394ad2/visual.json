@@ -1,0 +1,37 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definition/visualContainer/2.13.0/schema.json",
+  "name": "aa02subcfa8a62394ad2",
+  "position": {
+    "x": 20,
+    "y": 54,
+    "z": 30,
+    "height": 30,
+    "width": 660,
+    "tabOrder": 30
+  },
+  "visual": {
+    "visualType": "textbox",
+    "objects": {
+      "general": [
+        {
+          "properties": {
+            "paragraphs": [
+              {
+                "textRuns": [
+                  {
+                    "value": "What the automated Fabric pipeline loaded on its latest run, and the checks it passed",
+                    "textStyle": {
+                      "fontSize": "11pt",
+                      "color": "#555555"
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "drillFilterOtherVisuals": true
+  }
+}

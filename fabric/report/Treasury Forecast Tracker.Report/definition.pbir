@@ -1,0 +1,9 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/item/report/definitionProperties/2.0.0/schema.json",
+  "version": "4.0",
+  "datasetReference": {
+    "byConnection": {
+      "connectionString": "Data Source=powerbi://api.powerbi.com/v1.0/myorg/tft-dev;initial catalog=sm_forecast_tracker_public;integrated security=ClaimsToken;semanticmodelid=68cf5727-e77f-4361-ba33-7c4c286b0464"
+    }
+  }
+}
