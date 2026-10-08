@@ -1,6 +1,6 @@
 # Status
 
-_Last updated: 2026-10-08 13:20 NZDT_
+_Last updated: 2026-10-08 13:45 NZDT_
 
 ## Working rules (set by Brett, 8 Oct)
 - One task at a time. Each reply gives everything needed for that one task, repeating earlier detail if necessary.
@@ -40,8 +40,11 @@ All applied through the Fabric REST API (see `fabric/README.md`), checked in the
 
 Current page 1 layout (1280x720): title + subtitle top left; caveat + "Data logs" top right; slicer (20,92,330x330); purpose card (20,430,330x220); insight (365,92,895x104); chart (365,202,895x226); matrix (365,434,895x216); four footer texts at y=658.
 
+Round 1 follow-up (13:17, Brett: "looks great"): purpose card given left padding (body text now 9pt so it fits); footers moved to y=652 h=66; PDF brief rebuilt with the new text and fresh exports (docs/brief, also in Brett's Downloads). DONE 13:45.
+
+How the PDF pages were exported: Chrome blocked the normal Export > PDF download (automatic downloads from the Fabric site are blocked after an earlier scripted download attempt; Brett can re-allow it from the address bar). Workaround used: Power BI REST `POST .../reports/{id}/ExportTo {format:'PDF'}` from the page, poll `/exports/{id}`, fetch `/file`, base64 it into the `__dump` article in 45k chunks, read with get_page_text, then rebuild the file from the session transcript with a script. Brief build: `/home/claude/brief/build.py` (Playwright) then pdfunite.
+
 Open after round 1:
-- PDF brief (docs/brief) still shows the OLD report layout: regenerate if Brett wants it to match.
 - Page 2 title text says a 404 means "not yet published"; Treasury now says the timing of the next update is undetermined. Wording is still accurate, could be softened.
 - Matrix shows two decimals for $ million figures and the chart has no unit label (cosmetic).
 

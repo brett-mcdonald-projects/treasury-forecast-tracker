@@ -22,7 +22,7 @@
                     "value": "Purpose and function",
                     "textStyle": {
                       "fontWeight": "bold",
-                      "fontSize": "12pt",
+                      "fontSize": "11pt",
                       "color": "#1F3864"
                     }
                   }
@@ -34,13 +34,13 @@
                     "value": "What it does: ",
                     "textStyle": {
                       "fontWeight": "bold",
-                      "fontSize": "10pt"
+                      "fontSize": "9pt"
                     }
                   },
                   {
                     "value": "Compares the Treasury's three most recent forecast rounds across eight headline economic and fiscal measures.",
                     "textStyle": {
-                      "fontSize": "10pt"
+                      "fontSize": "9pt"
                     }
                   }
                 ]
@@ -51,13 +51,13 @@
                     "value": "Why: ",
                     "textStyle": {
                       "fontWeight": "bold",
-                      "fontSize": "10pt"
+                      "fontSize": "9pt"
                     }
                   },
                   {
                     "value": "To show how the outlook was revised from one round to the next, without opening three sets of tables.",
                     "textStyle": {
-                      "fontSize": "10pt"
+                      "fontSize": "9pt"
                     }
                   }
                 ]
@@ -68,13 +68,13 @@
                     "value": "How to use it: ",
                     "textStyle": {
                       "fontWeight": "bold",
-                      "fontSize": "10pt"
+                      "fontSize": "9pt"
                     }
                   },
                   {
                     "value": "Select a measure above. The chart traces each round, the note above it states what changed in the latest round, and the table gives the figures. Data logs shows what the pipeline loaded and the checks it passed.",
                     "textStyle": {
-                      "fontSize": "10pt"
+                      "fontSize": "9pt"
                     }
                   }
                 ]
@@ -139,6 +139,40 @@
               }
             },
             "radius": {
+              "expr": {
+                "Literal": {
+                  "Value": "6D"
+                }
+              }
+            }
+          }
+        }
+      ],
+      "padding": [
+        {
+          "properties": {
+            "left": {
+              "expr": {
+                "Literal": {
+                  "Value": "12D"
+                }
+              }
+            },
+            "right": {
+              "expr": {
+                "Literal": {
+                  "Value": "10D"
+                }
+              }
+            },
+            "top": {
+              "expr": {
+                "Literal": {
+                  "Value": "6D"
+                }
+              }
+            },
+            "bottom": {
               "expr": {
                 "Literal": {
                   "Value": "6D"
